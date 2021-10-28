@@ -1085,35 +1085,308 @@ int main()
 输出：false
 */
 
+//#include <iostream>
+//class Solution {
+//public:
+//    bool isPalindrome(int x) {
+//        if(x < 0)
+//        {
+//            return false;
+//        }
+//        else
+//        {
+//            int originNum = x;
+//            long n = 0;
+//            while (x) {
+//                n = n * 10 + x % 10;
+//                x = x / 10;
+//            }
+//            return n == originNum;
+//        }
+//    }
+//};
+//
+//int main(){
+//    Solution s;
+//    std::cout << "请输入整数: ";
+//    int num;
+//    std::cin >> num;
+//    std:: cout << s.isPalindrome(num) <<std::endl;
+//
+//}
+
+
+
+
+/*
+//Task 19
+罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。
+
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：
+
+I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。
+X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。
+C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。
+给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。
+
+
+示例 1:
+
+输入: "III"
+输出: 3
+示例 2:
+
+输入: "IV"
+输出: 4
+示例 3:
+
+输入: "IX"
+输出: 9
+示例 4:
+
+输入: "LVIII"
+输出: 58
+解释: L = 50, V= 5, III = 3.
+示例 5:
+
+输入: "MCMXCIV"
+输出: 1994
+解释: M = 1000, CM = 900, XC = 90, IV = 4.
+
+*/
+
+/*
 #include <iostream>
+#include <string>
+#include <map>
+using namespace std;
+
 class Solution {
 public:
-    bool isPalindrome(int x) {
-        if(x < 0)
-        {
-            return false;
-        }
-        else
-        {
-            int originNum = x;
-            long n = 0;
-            while (x) {
-                n = n * 10 + x % 10;
-                x = x / 10;
+    int romanToInt(string s) {
+        std::map<char,int> a = {{'I',1},{'V',5},{'X',10}, {'L',50}, {'C',100}, {'D',500},{'M',1000}};
+        
+        int total = 0;
+        int numPre = 0;
+        int numNext = 0;
+        for(int i = 0; i< s.size();i++){
+            
+            if(a.count(s[i])>0){
+                numPre = a[s[i]];
             }
-            return n == originNum;
+            if(a.count(s[i+1])>0){
+                numNext = a[s[i+1]];
+            }
+            
+            if(numPre >= numNext){
+                total += numPre;
+            }
+            else{
+                total -= numPre;
+            }
         }
+        return total;
     }
 };
 
-int main(){
+int main()
+{
     Solution s;
-    std::cout << "请输入整数: ";
-    int num;
-    std::cin >> num;
-    std:: cout << s.isPalindrome(num) <<std::endl;
-    
+    string str = "IV";
+    int total = s.romanToInt(str);
+    std::cout << total << std::endl;
 }
+ */
 
+
+
+
+
+
+
+
+
+
+/*
+//Task 20
+给定一个二叉树，检查它是否是镜像对称的。
+
+ 
+
+例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
+
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+ 
+
+但是下面这个 [1,2,2,null,3,null,3] 则不是镜像对称的:
+
+    1
+   / \
+  2   2
+   \   \
+   3    3
+
+*/
+
+
+/*
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ };
+
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        return isMirror(root->left, root->right);
+    }
+    
+    bool isMirror(TreeNode* p, TreeNode* q){
+        if(!q && !p){
+            return true;
+        }
+        if(!q || !p){
+            return false;
+        }
+        if(p->val == q->val){
+            return isMirror(p->left, q->right) && isMirror(p->right, q->left);
+        }
+        return false;
+    }
+};
+*/
+
+
+
+
+
+
+
+
+
+/*
+//Task 21
+将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+
+ 
+
+示例 1：
+
+ 
+输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+示例 2：
+
+输入：l1 = [], l2 = []
+输出：[]
+示例 3：
+
+输入：l1 = [], l2 = [0]
+输出：[0]
+*/
+
+
+
+//struct ListNode {
+//    int val;
+//    ListNode *next;
+//    ListNode():val(0),next(nullptr){}
+//    ListNode(int x):val(x),next(nullptr){}
+//    ListNode(int x, ListNode* next):val(x),next(next){}
+//};
+//
+//class Solution {
+//public:
+//    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+//        if(!l1){
+//            return l2;
+//        }
+//        if(!l2){
+//            return l1;
+//        }
+//        if(l1->val < l2->val){
+//            l1->next = mergeTwoLists(l1->next, l2);
+//            return l1;
+//        }
+//        else{
+//            l2->next = mergeTwoLists(l1, l2->next);
+//            return l2;
+//        }
+//    }
+//};
+
+
+
+
+
+
+
+
+
+
+
+/*
+//Task 21
+存在一个按升序排列的链表，给你这个链表的头节点 head ，请你删除所有重复的元素，使每个元素 只出现一次 。
+
+返回同样按升序排列的结果链表。
+
+ 
+
+示例 1：
+
+
+输入：head = [1,1,2]
+输出：[1,2]
+示例 2：
+
+
+输入：head = [1,1,2,3,3]
+输出：[1,2,3]
+
+*/
+
+/*
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode():val(0),next(nullptr){};
+    ListNode(int x):val(x),next(nullptr){};
+    ListNode(int x, ListNode *next):val(x),next(next){};
+};
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode *p = head;
+        while (p) {
+            if(p->next && p->val == p->next->val){
+                p->next = p->next->next;
+            }
+            else{
+                p= p->next;
+            }
+        }
+        return head;
+    }
+};*/
 
 
