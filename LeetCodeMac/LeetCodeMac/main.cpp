@@ -1636,6 +1636,84 @@ public:
 
 
 
+/*
+//Task 26
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+ 
+
+示例 1：
+
+输入：s = "()"
+输出：true
+示例 2：
+
+输入：s = "()[]{}"
+输出：true
+示例 3：
+
+输入：s = "(]"
+输出：false
+示例 4：
+
+输入：s = "([)]"
+输出：false
+示例 5：
+
+输入：s = "{[]}"
+输出：true
+
+*/
+
+
+#include <string>
+#include<algorithm>
+#include <iostream>
+#include <stack>
+using namespace std;
+
+class Solution {
+public:
+    string replaceSubstr(string s, string subStr, string newStr){
+        string::size_type pos = 0;
+        while ((pos = s.find(subStr)) != string::npos) {
+            s.replace(pos, subStr.length(), newStr);
+        }
+        return s;
+    }
+    
+    
+    bool isValid(string s) {
+        int length = s.length() /2;
+        for(int i = 0;i < length; i++){
+            s = replaceSubstr(replaceSubstr(replaceSubstr(s, "()", ""), "{}", ""), "[]", "");
+        }
+        return  s.length() == 0;
+    }
+    
+    bool isValid1(string s){
+        stack<char> ms;
+        for(char c : s){
+            if(c == '{' || c == '[' || c == '(')
+                ms.push(c);
+            else if(c == '}' && !ms.empty() && ms.top() == '{')
+                ms.pop();
+            else if(c == ')' && !ms.empty() && ms.top() == '(')
+                ms.pop();
+            else if(c == ']' && !ms.empty() && ms.top() == '[')
+                ms.pop();
+            else
+                return false;
+        }
+        return ms.empty();
+    }
+};
+
+int main()
 
 
 
