@@ -1670,6 +1670,7 @@ public:
 */
 
 
+/*
 #include <string>
 #include<algorithm>
 #include <iostream>
@@ -1713,8 +1714,542 @@ public:
     }
 };
 
-int main()
+int main(){
+    string str = "()[{}}";
+    Solution s;
+    std::cout << s.isValid1(str) << std::endl;
+    return 0;
+}
+*/
 
 
 
+
+
+
+
+
+/*
+//Task 27
+
+给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+
+不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+
+元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+
+ 
+
+说明:
+
+为什么返回数值是整数，但输出的答案是数组呢?
+
+请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。
+
+你可以想象内部操作如下:
+
+// nums 是以“引用”方式传递的。也就是说，不对实参作任何拷贝
+int len = removeElement(nums, val);
+
+// 在函数里修改输入数组对于调用者是可见的。
+// 根据你的函数返回的长度, 它会打印出数组中 该长度范围内 的所有元素。
+for (int i = 0; i < len; i++) {
+    print(nums[i]);
+}
+ 
+
+示例 1：
+
+输入：nums = [3,2,2,3], val = 3
+输出：2, nums = [2,2]
+解释：函数应该返回新的长度 2, 并且 nums 中的前两个元素均为 2。你不需要考虑数组中超出新长度后面的元素。例如，函数返回的新长度为 2 ，而 nums = [2,2,3,3] 或 nums = [2,2,0,0]，也会被视作正确答案。
+示例 2：
+
+输入：nums = [0,1,2,2,3,0,4,2], val = 2
+输出：5, nums = [0,1,4,0,3]
+解释：函数应该返回新的长度 5, 并且 nums 中的前五个元素为 0, 1, 3, 0, 4。注意这五个元素可为任意顺序。你不需要考虑数组中超出新长度后面的元素。
+ */
+
+
+/*
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        vector<int>::iterator it = nums.begin();
+        while (it != nums.end()) {
+            if(*it == val){
+                it = nums.erase(it);
+            }else{
+                it++;
+            }
+        }
+        return nums.size();
+    }
+};
+
+int main(){
+    vector<int> test = {3,2,2,3};
+    Solution s;
+    cout << s.removeElement(test, 3) << endl;
+}
+*/
+
+
+
+
+
+/*
+
+ //Task 28
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+
+本题中，一棵高度平衡二叉树定义为：
+
+一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
+
+ 
+
+示例 1：
+
+
+输入：root = [3,9,20,null,null,15,7]
+输出：true
+示例 2：
+
+
+输入：root = [1,2,2,3,3,null,null,4,4]
+输出：false
+示例 3：
+
+输入：root = []
+输出：true
+
+*/
+
+
+/*
+#include <iostream>
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int x):val(x),left(nullptr),right(nullptr){}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    int getTreeHeight(TreeNode* root){
+        if(root == nullptr){
+            return 0;
+        }
+        int leftHeight = getTreeHeight(root->left);
+        if(leftHeight == -1){
+            return  -1;
+        }
+        int rightHeight = getTreeHeight(root->right);
+        if(rightHeight == -1){
+            return -1;
+        }
+        return abs(leftHeight-rightHeight) > 1 ? -1: 1+std::max(leftHeight, rightHeight);
+    }
+    
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        int leftHeight = maxDepth(root->left);
+        int rightHeight = maxDepth(root->right);
+        return std::max(leftHeight, rightHeight) + 1;
+    }
+    
+    bool isBalanced(TreeNode* root) {
+        return getTreeHeight(root) != -1;
+    }
+};
+*/
+
+
+
+
+
+/*
+
+ //Task 29
+实现 strStr() 函数。
+
+给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串出现的第一个位置（下标从 0 开始）。如果不存在，则返回  -1 。
+
+ 
+
+说明：
+
+当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。
+
+对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与 C 语言的 strstr() 以及 Java 的 indexOf() 定义相符。
+
+ 
+
+示例 1：
+输入：haystack = "hello", needle = "ll"
+输出：2
+
+示例 2：
+输入：haystack = "aaaaa", needle = "bba"
+输出：-1
+ 
+示例 3：
+输入：haystack = "", needle = ""
+输出：0
+
+*/
+
+
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle == ""){
+            return 0;
+        }
+        if(haystack == "" || (haystack.length() < needle.length())){
+            return -1;
+        }
+        int index = -1;
+        for(int i = 0; i <= haystack.length()-needle.length(); i++){
+            for(int j = 0; j < needle.length(); j++){
+                if(haystack[i+j] != needle[j]){
+                    break;
+                }
+                if(j == needle.length()-1){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+};
+
+int main(){
+    string haystack = "aaa";
+    string needle = "aaaa";
+    
+    Solution s;
+    std::cout << s.strStr(haystack, needle) << std::endl;
+}
+*/
+
+
+
+
+
+
+
+/*
+
+//Task 30
+给你一个字符串 s，由若干单词组成，单词前后用一些空格字符隔开。返回字符串中最后一个单词的长度。
+单词 是指仅由字母组成、不包含任何空格字符的最大子字符串。
+
+ 
+
+示例 1：
+输入：s = "Hello World"
+输出：5
+ 
+示例 2：
+输入：s = "   fly me   to   the moon  "
+输出：4
+ 
+示例 3：
+输入：s = "luffy is still joyboy"
+输出：6
+ 
+提示：
+1 <= s.length <= 104
+s 仅有英文字母和空格 ' ' 组成
+s 中至少存在一个单词
+
+*/
+
+
+
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int lastWordLenghth = 0;
+        for(int i = s.length()-1; i>=0;i--){
+            if(s[i] != ' '){
+                lastWordLenghth++;
+            }
+            else if(s[i] == ' ' && lastWordLenghth !=0){
+                break;
+            }
+        }
+        return lastWordLenghth;
+    }
+};
+
+int main(){
+    std::string str = "   fly me   to   the moon  ";
+    Solution s;
+    std::cout << s.lengthOfLastWord(str) <<std::endl;
+}
+*/
+
+
+
+
+
+
+
+/*
+
+//Task 30
+ 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+
+ 请你将两个数相加，并以相同形式返回一个表示和的链表。
+
+ 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+  
+
+ 示例 1：
+
+
+ 输入：l1 = [2,4,3], l2 = [5,6,4]
+ 输出：[7,0,8]
+ 解释：342 + 465 = 807.
+ 示例 2：
+
+ 输入：l1 = [0], l2 = [0]
+ 输出：[0]
+ 示例 3：
+
+ 输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+ 输出：[8,9,9,9,0,0,0,1]
+
+*/
+
+
+/*
+#include <iostream>
+using namespace std;
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *root = new ListNode(0);
+        ListNode *p = root;
+        
+        int jinwei = 0;
+        while (l1 || l2 || jinwei != 0) {
+            int l1Val = l1 ? l1->val : 0;
+            int l2Val = l2 ? l2->val : 0;
+            
+            int sum = l1Val + l2Val + jinwei;
+            jinwei  = sum / 10;
+            ListNode *node = new ListNode(sum % 10);
+            p->next = node;
+            p= p->next;
+            
+            if(l1) l1 = l1->next;
+            if(l2) l2 = l2->next;
+        }
+        return root->next;
+    }
+    
+    ListNode* listInversion(ListNode* pHead){
+        ListNode* pre = nullptr;
+        ListNode* temp = nullptr;
+        while (pHead) {
+            temp = pHead->next;
+            pHead->next = pre;
+            pre = pHead;
+            pHead = temp;
+        }
+        return pre;
+    }
+    
+    void displayList(ListNode* pHead){
+        while (pHead) {
+            cout << pHead->val << "->";
+            pHead = pHead->next;
+        }
+        std::cout << std::endl;
+    }
+};
+
+
+int main(){
+    Solution sl;
+    
+    ListNode* pHead = new ListNode(1);
+    ListNode* p = pHead;
+    for(int i = 2; i <= 3; i++){
+        ListNode* node = new ListNode(i);
+        p->next = node;
+        p = p->next;
+    }
+    
+//    sl.displayList(pHead);
+    
+    sl.displayList(sl.addTwoNumbers(pHead,pHead));
+}
+*/
+
+
+
+
+
+
+/*
+
+//Task 31
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+请必须使用时间复杂度为 O(log n) 的算法。
+
+ 
+
+示例 1:
+
+输入: nums = [1,3,5,6], target = 5
+输出: 2
+示例 2:
+
+输入: nums = [1,3,5,6], target = 2
+输出: 1
+示例 3:
+
+输入: nums = [1,3,5,6], target = 7
+输出: 4
+示例 4:
+
+输入: nums = [1,3,5,6], target = 0
+输出: 0
+示例 5:
+
+输入: nums = [1], target = 0
+输出: 0
+ 
+
+提示:
+
+1 <= nums.length <= 104
+-104 <= nums[i] <= 104
+nums 为无重复元素的升序排列数组
+-104 <= target <= 104
+
+*/
+
+/*
+#include <iostream>
+#include <vector>
+using namespace std;
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size()-1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if(nums[middle] < target){
+                left = middle +1;
+            }else if (nums[middle] > target){
+                right = middle -1;
+            }else{
+                return middle;
+            }
+        }
+        return right + 1;
+    }
+};
+*/
+
+
+
+
+
+
+/*
+
+//Task 32
+给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+子数组 是数组中的一个连续部分。
+
+ 
+
+示例 1：
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+ 
+示例 2：
+输入：nums = [1]
+输出：1
+ 
+示例 3：
+输入：nums = [5,4,-1,7,8]
+输出：23
+
+*/
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    // 动态规划
+//    int maxSubArray(vector<int>& nums) {
+//        int pre = 0;
+//        int maxAns = nums[0];
+//        for(auto &x : nums){
+//            pre = max(pre + x, x);
+//            maxAns = max(maxAns, pre);
+//        }
+//        return maxAns;
+//    }
+    
+    
+    //贪心算法
+    int maxSubArray(vector<int>& nums){
+        int maxAns = INT_MIN;
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
+            maxAns = max(sum,maxAns);
+            if(sum < 0){
+                sum = 0;
+            }
+        }
+        return maxAns;
+    }
+};
+
+int main(){
+    std::cout << INT_MIN << std::endl;
+}
 
