@@ -2216,6 +2216,8 @@ public:
 
 */
 
+
+/*
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -2252,4 +2254,147 @@ public:
 int main(){
     std::cout << INT_MIN << std::endl;
 }
+*/
 
+
+
+
+
+/*
+ //Task 33
+给定一个二叉树，找出其最小深度。
+
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+
+说明：叶子节点是指没有子节点的节点。
+
+ 
+
+示例 1：
+
+
+输入：root = [3,9,20,null,null,15,7]
+输出：2
+示例 2：
+
+输入：root = [2,null,3,null,4,null,5,null,6]
+输出：5
+*/
+
+
+
+
+/*
+#include <iostream>
+using namespace std;
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(!root){
+            return 0;
+        }
+        int lChild = minDepth(root->left);
+        int rChild = minDepth(root->right);
+        return (lChild && rChild) ? 1 + min(lChild, rChild) : 1 + lChild + rChild;
+    }
+};
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+ //Task 34
+给你二叉树的根节点 root ，返回它节点值的 前序 遍历。
+
+ 
+
+示例 1：
+
+
+输入：root = [1,null,2,3]
+输出：[1,2,3]
+示例 2：
+
+输入：root = []
+输出：[]
+示例 3：
+
+输入：root = [1]
+输出：[1]
+示例 4：
+
+
+输入：root = [1,2]
+输出：[1,2]
+示例 5：
+
+
+输入：root = [1,null,2]
+输出：[1,2]
+
+*/
+
+
+
+#include <iostream>
+#include <vector>
+#include <stack>
+using namespace std;
+
+ struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+  };
+
+class Solution {
+public:
+    
+    void traversal(TreeNode* cur, vector<int>& result){
+        if(!cur){
+            return;
+        }
+        result.push_back(cur->val);
+        traversal(cur->left, result);
+        traversal(cur->right, result);
+    }
+    
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> result;
+        traversal(root, result);
+        return result;
+    }
+    
+    vector<int> preorderTraversalWithStack(TreeNode* root){
+        stack<TreeNode*> s;
+        vector<int> result;
+        s.push(root);
+        while (!s.empty()) {
+            TreeNode* r = s.top();
+            s.pop();
+            if(!r) continue;
+            result.push_back(r->val);
+            s.push(r->right);
+            s.push(r->left);
+        }
+        return result;
+    }
+};
