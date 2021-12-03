@@ -2350,7 +2350,7 @@ public:
 */
 
 
-
+/*
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -2396,5 +2396,127 @@ public:
             s.push(r->left);
         }
         return result;
+    }
+};
+*/
+
+
+
+
+
+
+
+/*
+ //Task 35
+给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。
+
+最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+
+你可以假设除了整数 0 之外，这个整数不会以零开头。
+
+ 
+
+示例 1：
+
+输入：digits = [1,2,3]
+输出：[1,2,4]
+解释：输入数组表示数字 123。
+示例 2：
+
+输入：digits = [4,3,2,1]
+输出：[4,3,2,2]
+解释：输入数组表示数字 4321。
+示例 3：
+
+输入：digits = [0]
+输出：[1]
+
+*/
+
+/*
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int jinwei = 1;
+        vector<int> result;
+        vector<int> finalResult;
+        for(int i = digits.size()-1; i >=0; i--){
+            if(digits[i] + jinwei == 10){
+                result.push_back(0);
+                jinwei = 1;
+            }
+            else{
+                result.push_back(digits[i] + jinwei);
+                jinwei = 0;
+            }
+        }
+        if(jinwei == 1){
+            result.push_back(1);
+        }
+        
+        for(int i = result.size()-1; i >=0; i--){
+            finalResult.push_back(result[i]);
+        }
+        return finalResult;
+    }
+};
+*/
+
+
+
+
+/*
+ //Task 36
+给你二叉树的根节点 root 和一个表示目标和的整数 targetSum ，判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。
+
+叶子节点 是指没有子节点的节点。
+
+ 
+
+示例 1：
+
+
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+输出：true
+示例 2：
+
+
+输入：root = [1,2,3], targetSum = 5
+输出：false
+示例 3：
+
+输入：root = [1,2], targetSum = 0
+输出：false
+
+*/
+
+
+
+#include <iostream>
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(!root){
+            return false;
+        }
+        if (root->val == targetSum && !root->left && !root->right){
+            return true;
+        }
+        bool leftResult = hasPathSum(root->left, targetSum-root->val);
+        bool rightResult = hasPathSum(root->right, targetSum-root->val);
+        
+        return leftResult || rightResult;
     }
 };
