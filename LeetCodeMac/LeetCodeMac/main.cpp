@@ -2494,7 +2494,7 @@ public:
 */
 
 
-
+/*
 #include <iostream>
 struct TreeNode {
       int val;
@@ -2520,3 +2520,180 @@ public:
         return leftResult || rightResult;
     }
 };
+ */
+
+
+
+
+
+
+
+/*
+//Task 37
+ 
+给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
+
+示例 1:
+输入: s = "abcabcbb"
+输出: 3
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+ 
+示例 2:
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+ 
+示例 3:
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+ 
+示例 4:
+输入: s = ""
+输出: 0
+
+*/
+
+
+/*
+#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.length() == 0){
+            return 0;
+        }
+        
+        int maxLength = 0;
+        int currentLength = 0;
+        int startIndex = 0;
+        
+        unordered_map<char, int> hashTable;
+        
+        for(int i = 0 ; i < s.length(); i++){
+            if(hashTable.find(s[i]) == hashTable.end()){
+                currentLength++;
+                hashTable[s[i]] = i;
+            }
+            else{
+                if(currentLength > maxLength){
+                    maxLength = currentLength;
+                }
+                
+                startIndex = max(hashTable[s[i]],startIndex);
+                currentLength = i - startIndex;
+                hashTable[s[i]] = i;
+            }
+        }
+        if(currentLength > maxLength){
+            maxLength = currentLength;
+        }
+        return maxLength;
+    }
+    
+    void dispalyAllSubStr(string str){
+        for(int i = 0; i < str.length(); i++){
+            cout << str[i] << endl;
+            char subStr[str.length()];
+            int m = 0;
+            subStr[m] = str[i];
+            for(int j = i+1; j < str.length(); j++){
+                subStr[++m] = str[j];
+                cout << subStr <<endl;
+            }
+        }
+    }
+};
+*/
+
+
+/*
+//Task 38
+给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+ 
+
+示例：
+二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层序遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+
+*/
+
+
+/*
+#include <vector>
+#include <queue>
+using namespace std;
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        
+        vector<vector<int>> result;
+        if(!root) {return result;}
+        
+        queue<TreeNode* > treeQuee;
+        treeQuee.push(root);
+        while (!treeQuee.empty()) {
+            int size = treeQuee.size();
+            vector<int> data;
+            for(int i = 0; i < size; i++){
+                TreeNode *T = treeQuee.front();
+                data.push_back(T->val);
+                treeQuee.pop();
+                
+                if(T->left) treeQuee.push(T->left);
+                if(T->right) treeQuee.push(T->right);
+            }
+            result.push_back(data);
+        }
+        return result;
+    }
+};
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
