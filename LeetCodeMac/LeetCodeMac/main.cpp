@@ -2685,14 +2685,148 @@ public:
 
 
 
+/*
+//Task 39
+
+给你两个二进制字符串，返回它们的和（用二进制表示）。
+
+输入为 非空 字符串且只包含数字 1 和 0。
+
+ 
+
+示例 1:
+
+输入: a = "11", b = "1"
+输出: "100"
+示例 2:
+
+输入: a = "1010", b = "1011"
+输出: "10101"
+
+*/
 
 
 
 
 
 
+/*
+#include <iostream>
+#include <string>
+using namespace std;
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        reverse(a.begin(), a.end());
+        reverse(b.begin(), b.end());
+        
+        string ans;
+        int n = max(a.size(),b.size());
+        int carry = 0;
+        for(int i = 0; i < n; i++){
+            carry += i < a.size() ? a.at(i) == '1' : 0;
+            carry += i < b.size() ? b.at(i) == '1' : 0;
+            ans.push_back(carry % 2 ? '1' : '0');
+            carry /= 2;
+        }
+        if(carry){
+            ans.push_back('1');
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+*/
 
 
+
+
+
+
+/*
+//Task 40
+
+翻转一棵二叉树。
+
+示例：
+
+输入：
+
+     4
+   /   \
+  2     7
+ / \   / \
+1   3 6   9
+输出：
+
+     4
+   /   \
+  7     2
+ / \   / \
+9   6 3   1
+
+
+*/
+
+
+
+/*
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root){
+            return nullptr;
+        }else{
+            TreeNode* treeLeft = root->left;
+            root->left = root->right;
+            root->right = treeLeft;
+            
+            root->left = invertTree(root->left);
+            root->right = invertTree(root->right);
+        }
+        return root;
+    }
+};
+*/
+
+
+
+
+/*
+//Task 41
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+ 
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+示例 2：
+
+输入：s = "cbbd"
+输出："bb"
+示例 3：
+
+输入：s = "a"
+输出："a"
+示例 4：
+
+输入：s = "ac"
+输出："a"
+
+*/
 
 
 
