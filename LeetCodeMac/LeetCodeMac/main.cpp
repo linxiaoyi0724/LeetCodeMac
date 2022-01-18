@@ -2633,7 +2633,6 @@ public:
   [9,20],
   [15,7]
 ]
-
 */
 
 
@@ -2802,31 +2801,64 @@ public:
 
 
 
+
+
+
 /*
 //Task 41
-给你一个字符串 s，找到 s 中最长的回文子串。
+ 
+ 
+给你一个非负整数 x ，计算并返回 x 的 算术平方根 。
+
+由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
+
+注意：不允许使用任何内置指数函数和算符，例如 pow(x, 0.5) 或者 x ** 0.5 。
 
  
 
 示例 1：
 
-输入：s = "babad"
-输出："bab"
-解释："aba" 同样是符合题意的答案。
+输入：x = 4
+输出：2
 示例 2：
 
-输入：s = "cbbd"
-输出："bb"
-示例 3：
-
-输入：s = "a"
-输出："a"
-示例 4：
-
-输入：s = "ac"
-输出："a"
-
+输入：x = 8
+输出：2
+解释：8 的算术平方根是 2.82842..., 由于返回类型是整数，小数部分将被舍去。
 */
+
+#include <iostream>
+
+class Solution {
+public:
+    int mySqrt(int x) {
+        if(x <= 1){
+            return x;
+        }
+        int low = 1, high = x;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if(mid == x / mid){
+                return mid;
+            }else if(mid < x /mid){
+                low ++;
+            }else{
+                high = mid;
+            }
+        }
+        return low-1;
+    }
+};
+
+int main(){
+    Solution s;
+    int result = s.mySqrt(4);
+    std::cout << result << std::endl;
+}
+
+
+
+
 
 
 
