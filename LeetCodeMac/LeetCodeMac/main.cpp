@@ -2827,39 +2827,213 @@ public:
 解释：8 的算术平方根是 2.82842..., 由于返回类型是整数，小数部分将被舍去。
 */
 
+//#include <iostream>
+//
+//class Solution {
+//public:
+//    int mySqrt(int x) {
+//        if(x <= 1){
+//            return x;
+//        }
+//        int low = 1, high = x;
+//        while (low < high) {
+//            int mid = low + (high - low) / 2;
+//            if(mid == x / mid){
+//                return mid;
+//            }else if(mid < x /mid){
+//                low ++;
+//            }else{
+//                high = mid;
+//            }
+//        }
+//        return low-1;
+//    }
+//};
+//
+//int main(){
+//    Solution s;
+//    int result = s.mySqrt(4);
+//    std::cout << result << std::endl;
+//}
+
+
+
+/*
+//Task 42
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+ 
+
+示例 1：
+
+输入：n = 2
+输出：2
+解释：有两种方法可以爬到楼顶。
+1. 1 阶 + 1 阶
+2. 2 阶
+示例 2：
+
+输入：n = 3
+输出：3
+解释：有三种方法可以爬到楼顶。
+1. 1 阶 + 1 阶 + 1 阶
+2. 1 阶 + 2 阶
+3. 2 阶 + 1 阶
+ 
+
+提示：
+
+1 <= n <= 45
+
+*/
+
+/*
 #include <iostream>
+using namespace std;
 
 class Solution {
 public:
-    int mySqrt(int x) {
-        if(x <= 1){
-            return x;
+    int climbStairs(int n) {
+        int p,q =0, r = 1;
+        for(int i =0; i < n; i++){
+            p = q;
+            q = r;
+            r = p +q;
         }
-        int low = 1, high = x;
-        while (low < high) {
-            int mid = low + (high - low) / 2;
-            if(mid == x / mid){
-                return mid;
-            }else if(mid < x /mid){
-                low ++;
-            }else{
-                high = mid;
-            }
-        }
-        return low-1;
+        return r;
     }
 };
 
 int main(){
-    Solution s;
-    int result = s.mySqrt(4);
-    std::cout << result << std::endl;
+    Solution sl;
+    std::cout << sl.climbStairs(44) << std::endl;
 }
+*/
+
+
+
+
+/*
+//Task 43
+ 
+给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。
+
+请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。
+
+注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。
+
+ 
+示例 1：
+
+输入：nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+输出：[1,2,2,3,5,6]
+解释：需要合并 [1,2,3] 和 [2,5,6] 。
+合并结果是 [1,2,2,3,5,6] ，其中斜体加粗标注的为 nums1 中的元素。
+示例 2：
+
+输入：nums1 = [1], m = 1, nums2 = [], n = 0
+输出：[1]
+解释：需要合并 [1] 和 [] 。
+合并结果是 [1] 。
+示例 3：
+
+输入：nums1 = [0], m = 0, nums2 = [1], n = 1
+输出：[1]
+解释：需要合并的数组是 [] 和 [1] 。
+合并结果是 [1] 。
+注意，因为 m = 0 ，所以 nums1 中没有元素。nums1 中仅存的 0 仅仅是为了确保合并结果可以顺利存放到 nums1 中。
+ 
+
+提示：
+
+nums1.length == m + n
+nums2.length == n
+0 <= m, n <= 200
+1 <= m + n <= 200
+-109 <= nums1[i], nums2[j] <= 109
+
+*/
+
+
+/*
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int last = m + n - 1;
+        while (n) {
+            if(!m || nums1[m-1] < nums2[n-1]){
+                nums1[last--] = nums2[--n];
+            }else{
+                nums1[last--] = nums1[--m];
+            }
+        }
+    }
+};
+*/
 
 
 
 
 
 
+
+
+/*
+//Task 44
+
+给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
+
+在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+
+
+
+ 
+
+示例 1:
+
+输入: numRows = 5
+输出: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+示例 2:
+
+输入: numRows = 1
+输出: [[1]]
+ 
+
+提示:
+
+1 <= numRows <= 30
+
+*/
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result(numRows);
+        for(int i = 0; i < numRows; i++){
+            result[i].resize(i+1);
+            result[i][0] = result[i][i] = 1;
+            for(int j = 1; j < i; j++){
+                result[i][j] = result[i-1][j-1] + result[i-1][j];
+            }
+        }
+        return result;
+    }
+};
+
+int main(){
+    std::cout << "rookielin";
+}
 
 
