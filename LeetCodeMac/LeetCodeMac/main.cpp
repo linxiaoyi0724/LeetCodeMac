@@ -3078,6 +3078,7 @@ int main(){
 
 
 #include<vector>
+#include<iostream>
 using namespace std;
 class Solution {
 public:
@@ -3096,3 +3097,7 @@ public:
     }
 };
 
+int main(){
+    std::cout << "hello" << std::endl;
+    std::cin.ignore();
+}
