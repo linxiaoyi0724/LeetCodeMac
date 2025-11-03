@@ -3442,6 +3442,8 @@ int main(){
 */
 
 
+
+/*
 #include <vector>
 #include <string>
 #include <iostream>
@@ -3477,3 +3479,147 @@ int main(){
         }
     }
 }
+*/
+
+
+
+
+/*
+ //Task 50 汇总区间
+ 
+ 给定一个  无重复元素 的 有序 整数数组 nums 。
+ 
+ 区间 [a,b] 是从 a 到 b（包含）的所有整数的集合。
+ 
+ 返回 恰好覆盖数组中所有数字 的 最小有序 区间范围列表 。也就是说，nums 的每个元素都恰好被某个区间范围所覆盖，并且不存在属于某个区间但不属于 nums 的数字 x 。
+ 
+ 列表中的每个区间范围 [a,b] 应该按如下格式输出：
+ 
+ "a->b" ，如果 a != b
+ "a" ，如果 a == b
+ 
+ 
+ 示例 1：
+ 
+ 输入：nums = [0,1,2,4,5,7]
+ 输出：["0->2","4->5","7"]
+ 解释：区间范围是：
+ [0,2] --> "0->2"
+ [4,5] --> "4->5"
+ [7,7] --> "7"
+ 示例 2：
+ 
+ 输入：nums = [0,2,3,4,6,8,9]
+ 输出：["0","2->4","6","8->9"]
+ 解释：区间范围是：
+ [0,0] --> "0"
+ [2,4] --> "2->4"
+ [6,6] --> "6"
+ [8,9] --> "8->9"
+ */
+
+
+
+/*
+ #include <vector>
+ #include <string>
+ #include <iostream>
+ using namespace std;
+ class Solution{
+ public:
+ vector<string> summaryRanges(vector<int>& nums){
+ int n = nums.size();
+ int i = 0;
+ vector<string> result;
+ while(i < n){
+ i++;
+ int low = nums[i-1];
+ while(i < n && nums[i] == nums[i-1] + 1){
+ i++;
+ }
+ 
+ string temp;
+ int high = nums[i-1];
+ temp.append(to_string(low));
+ if(low < high){
+ temp.append("->");
+ temp.append(to_string(high));
+ }
+ result.emplace_back(temp);
+ }
+ return result;
+ }
+ };
+ 
+ int main(){
+ vector<int> nums = {0,2,3,4,6,8,9};
+ Solution sl;
+ auto result = sl.summaryRanges(nums);
+ for(auto str : result){
+ std::cout << str << std::endl;
+ }
+ }
+ */
+
+
+
+
+
+
+/*
+ //Task 51 搜索二维矩阵
+ 
+ 给你一个满足下述两条属性的 m x n 整数矩阵：
+
+ 每行中的整数从左到右按非严格递增顺序排列。
+ 每行的第一个整数大于前一行的最后一个整数。
+ 给你一个整数 target ，如果 target 在矩阵中，返回 true ；否则，返回 false 。
+
+  
+
+ 示例 1：
+
+
+ 输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+ 输出：true
+ 示例 2：
+
+
+ 输入：matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+ 输出：false
+*/
+
+
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class Solution{
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target){
+        int row = matrix.size();
+        int col = matrix[0].size();
+        int low = 0;
+        int high = row * col - 1;
+        while(low <= high){
+            int mid = (high - low) / 2 + low;
+            int x = matrix[mid / col][mid % col];
+            if (x == target){
+                return true;
+            }else if ( x > target){
+                high = mid - 1;
+            }else{
+                low = mid + 1;
+            }
+        }
+        return false;
+    }
+};
+
+int main(){
+    vector<vector<int>> matrix = {{1,3,5,7},{10,11,16,20},{23,30,34,60}};
+    int target = 13;
+    Solution sl;
+    std::cout << sl.searchMatrix(matrix, target) << std::endl;
+}
+
