@@ -3364,6 +3364,7 @@ int main(){
 
  */
 
+/*
 #include <unordered_set>
 #include <vector>
 #include <iostream>
@@ -3403,4 +3404,76 @@ int main(){
     Solution sl;
     std::cout << sl.hasCycle(head) << std::endl;
 }
+*/
 
+
+
+
+/*
+ //Task 49 字母异位词分组
+ 
+ 给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+
+  
+
+ 示例 1:
+
+ 输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+
+ 输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+ 解释：
+
+ 在 strs 中没有字符串可以通过重新排列来形成 "bat"。
+ 字符串 "nat" 和 "tan" 是字母异位词，因为它们可以重新排列以形成彼此。
+ 字符串 "ate" ，"eat" 和 "tea" 是字母异位词，因为它们可以重新排列以形成彼此。
+ 示例 2:
+
+ 输入: strs = [""]
+
+ 输出: [[""]]
+
+ 示例 3:
+
+ 输入: strs = ["a"]
+
+ 输出: [["a"]]
+
+*/
+
+
+#include <vector>
+#include <string>
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+class Solution{
+public:
+    vector<vector<string>> groupAnagrams(vector<string> strs){
+        // 先对数组进行排序，获取相同key 对应的不同value
+        unordered_map<string, vector<string>> mp;
+        for(auto str : strs){
+            string key = str;
+            std::sort(key.begin(),key.end());
+            mp[key].emplace_back(str);
+        }
+        
+        // 遍历整个hash map, 将相同key的value取出来
+        vector<vector<string>> ans;
+        for(auto it = mp.begin(); it != mp.end(); it++){
+            ans.emplace_back(it->second);
+        }
+        return ans;
+    }
+};
+
+int main(){
+    vector<string> strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
+    Solution sl;
+    vector<vector<string>>result = sl.groupAnagrams(strs);
+    for(auto it = result.begin(); it != result.end(); it++){
+        for(auto it_s = it->begin(); it_s != it->end(); it_s++){
+            std::cout << *it_s << std::endl;
+        }
+    }
+}
