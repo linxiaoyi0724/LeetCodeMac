@@ -3812,6 +3812,7 @@ int main(){
  */
 
 
+/*
 #include <stack>
 #include <iostream>
 using namespace std;
@@ -3854,4 +3855,198 @@ int main(){
     std::cout << minStack.top() << std::endl;
     std::cout << minStack.getMin() << std::endl;
 }
+*/
 
+
+
+
+
+
+
+
+/*
+ //Task 54 用最少数量的箭引爆气球
+ 
+ 有一些球形气球贴在一堵用 XY 平面表示的墙面上。墙面上的气球记录在整数数组 points ，其中points[i] = [xstart, xend] 表示水平直径在 xstart 和 xend之间的气球。你不知道气球的确切 y 坐标。
+
+ 一支弓箭可以沿着 x 轴从不同点 完全垂直 地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被 引爆 。可以射出的弓箭的数量 没有限制 。 弓箭一旦被射出之后，可以无限地前进。
+
+ 给你一个数组 points ，返回引爆所有气球所必须射出的 最小 弓箭数 。
+
+  
+ 示例 1：
+
+ 输入：points = [[10,16],[2,8],[1,6],[7,12]]
+ 输出：2
+ 解释：气球可以用2支箭来爆破:
+ -在x = 6处射出箭，击破气球[2,8]和[1,6]。
+ -在x = 11处发射箭，击破气球[10,16]和[7,12]。
+ 示例 2：
+
+ 输入：points = [[1,2],[3,4],[5,6],[7,8]]
+ 输出：4
+ 解释：每个气球需要射出一支箭，总共需要4支箭。
+ 示例 3：
+
+ 输入：points = [[1,2],[2,3],[3,4],[4,5]]
+ 输出：2
+ 解释：气球可以用2支箭来爆破:
+ - 在x = 2处发射箭，击破气球[1,2]和[2,3]。
+ - 在x = 4处射出箭，击破气球[3,4]和[4,5]。
+  
+
+ 提示:
+
+ 1 <= points.length <= 105
+ points[i].length == 2
+ -231 <= xstart < xend <= 231 - 1
+*/
+
+
+/*
+#include <vector>
+#include <iostream>
+using namespace std;
+class Solution{
+public:
+    int findMinArrowShots(vector<vector<int>>& points){
+        sort(points.begin(),points.end(),[](const vector<int>& u, const vector<int>& v){
+            return u[1] < v[1];
+        });
+        
+        int pos = points[0][1];
+        int ans = 1;
+        for(auto bloom : points){
+            if(pos < bloom[0]){
+                ans++;
+                pos = bloom[1];
+            }
+        }
+        return ans;
+    }
+};
+
+int main(){
+    vector<vector<int>> points = {{10,16},{2,8},{1,6},{7,12}};
+    Solution sl;
+    std::cout <<  sl.findMinArrowShots(points) << std::endl;
+}
+*/
+
+
+
+
+
+
+/*
+ //Task 55 逆波兰表达式求值
+ 中等
+ 相关标签
+ premium lock icon
+ 相关企业
+ 给你一个字符串数组 tokens ，表示一个根据 逆波兰表示法 表示的算术表达式。
+
+ 请你计算该表达式。返回一个表示表达式值的整数。
+
+ 注意：
+
+ 有效的算符为 '+'、'-'、'*' 和 '/' 。
+ 每个操作数（运算对象）都可以是一个整数或者另一个表达式。
+ 两个整数之间的除法总是 向零截断 。
+ 表达式中不含除零运算。
+ 输入是一个根据逆波兰表示法表示的算术表达式。
+ 答案及所有中间计算结果可以用 32 位 整数表示。
+  
+
+ 示例 1：
+
+ 输入：tokens = ["2","1","+","3","*"]
+ 输出：9
+ 解释：该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9
+ 示例 2：
+
+ 输入：tokens = ["4","13","5","/","+"]
+ 输出：6
+ 解释：该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6
+ 示例 3：
+
+ 输入：tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+ 输出：22
+ 解释：该算式转化为常见的中缀算术表达式为：
+   ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+ = ((10 * (6 / (12 * -11))) + 17) + 5
+ = ((10 * (6 / -132)) + 17) + 5
+ = ((10 * 0) + 17) + 5
+ = (0 + 17) + 5
+ = 17 + 5
+ = 22
+  
+
+ 提示：
+
+ 1 <= tokens.length <= 104
+ tokens[i] 是一个算符（"+"、"-"、"*" 或 "/"），或是在范围 [-200, 200] 内的一个整数
+  
+
+ 逆波兰表达式：
+
+ 逆波兰表达式是一种后缀表达式，所谓后缀就是指算符写在后面。
+
+ 平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。
+ 该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。
+ 逆波兰表达式主要有以下两个优点：
+
+ 去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。
+ 适合用栈操作运算：遇到数字则入栈；遇到算符则取出栈顶两个数字进行计算，并将结果压入栈中
+*/
+
+
+#include <vector>
+#include <iostream>
+#include <stack>
+using namespace std;
+class Solution{
+public:
+    int evalRPN(vector<string>& tokens){
+        stack<int> sk;
+        for(auto token : tokens){
+            if(isNumber(token)){
+                sk.push(stoi(token));
+            }
+            else{
+                int num2 = sk.top();
+                sk.pop();
+                int num1 = sk.top();
+                sk.pop();
+                switch (token[0]) {
+                    case '+':
+                        sk.push(num1 + num2);
+                        break;
+                    case '-':
+                        sk.push(num1 - num2);
+                        break;
+                    case '*':
+                        sk.push(num1 * num2);
+                        break;
+                    case '/':
+                        sk.push(num1 / num2);
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+        return sk.top();
+    }
+    bool isNumber(string str){
+        return !(str == "+" || str == "-" || str == "*" || str == "/");
+    }
+
+};
+
+int main(){
+    vector<string> token = {"2","1","+","3","*"};
+    Solution sl;
+    std::cout << sl.evalRPN(token) << std::endl;
+}
