@@ -4001,6 +4001,7 @@ int main(){
 */
 
 
+/*
 #include <vector>
 #include <iostream>
 #include <stack>
@@ -4049,4 +4050,201 @@ int main(){
     vector<string> token = {"2","1","+","3","*"};
     Solution sl;
     std::cout << sl.evalRPN(token) << std::endl;
+}
+*/
+
+
+
+
+
+/*
+ //Task 56 基本计算器
+ 给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。
+
+ 注意:不允许使用任何将字符串作为数学表达式计算的内置函数，比如 eval() 。
+
+  
+
+ 示例 1：
+
+ 输入：s = "1 + 1"
+ 输出：2
+ 示例 2：
+
+ 输入：s = " 2-1 + 2 "
+ 输出：3
+ 示例 3：
+
+ 输入：s = "(1+(4+5+2)-3)+(6+8)"
+ 输出：23
+  
+
+ 提示：
+
+ 1 <= s.length <= 3 * 105
+ s 由数字、'+'、'-'、'('、')'、和 ' ' 组成
+ s 表示一个有效的表达式
+ '+' 不能用作一元运算(例如， "+1" 和 "+(2 + 3)" 无效)
+ '-' 可以用作一元运算(即 "-1" 和 "-(2 + 3)" 是有效的)
+ 输入中不存在两个连续的操作符
+ 每个数字和运行的计算将适合于一个有符号的 32位 整数
+ */
+
+
+/*
+ #include <string>
+ #include <iostream>
+ #include <stack>
+ using namespace std;
+ class Solution{
+ public:
+ int calculate(string s){
+ // 设置一个栈变量，用于存储符号
+ stack<int> sk;
+ int sign = 1;
+ sk.push(sign);
+ 
+ int n = s.length();
+ int i = 0;
+ int result = 0;
+ 
+ while(i < n){
+ if(s[i] == ' '){
+ i++;
+ }else if(s[i] == '+'){
+ sign = sk.top();
+ i++;
+ }else if(s[i] == '-'){
+ sign = -sk.top();
+ i++;
+ }else if(s[i] == '('){
+ sk.push(sign);
+ i++;
+ }else if(s[i] == ')'){
+ sk.pop();
+ i++;
+ }else{
+ long num = 0;
+ while(i < n && s[i] >= '0' && s[i] <= '9'){
+ num = num * 10 + s[i] - '0';
+ i++;
+ }
+ result += sign * num;
+ }
+ }
+ return result;
+ }
+ };
+ 
+ int main(){
+ string str = " 2-1 + 2 ";
+ Solution sl;
+ std::cout << sl.calculate(str) << std::endl;
+ }
+ */
+
+
+
+
+
+
+
+/*
+ //Task 57 两数相加
+ 
+ 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+ 
+ 请你将两个数相加，并以相同形式返回一个表示和的链表。
+ 
+ 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：l1 = [2,4,3], l2 = [5,6,4]
+ 输出：[7,0,8]
+ 解释：342 + 465 = 807.
+ 示例 2：
+ 
+ 输入：l1 = [0], l2 = [0]
+ 输出：[0]
+ 示例 3：
+ 
+ 输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+ 输出：[8,9,9,9,0,0,0,1]
+ 
+ 
+ 提示：
+ 
+ 每个链表中的节点数在范围 [1, 100] 内
+ 0 <= Node.val <= 9
+ 题目数据保证列表表示的数字不含前导零
+ */
+
+
+#include <vector>
+#include <iostream>
+using namespace std;
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode(): val(0), next(nullptr){}
+    ListNode(int x): val(x), next(nullptr){}
+    ListNode(int x, ListNode* next): val(x), next(next){}
+};
+
+
+class Solution{
+public:
+    ListNode* addTwoNumbers(ListNode* L1, ListNode* L2){
+        ListNode* root = new ListNode(0);
+        ListNode* p = root;
+        int jinwei = 0;
+        while(L1 || L2 || jinwei){
+            int L1Val = (L1 ? L1->val: 0);
+            int L2Val = (L2 ? L2->val: 0);
+            
+            int L3Val = L1Val + L2Val + jinwei;
+            jinwei = L3Val / 10;
+            ListNode* L3 = new ListNode();
+            L3->val = L3Val % 10;
+            p->next = L3;
+            p = p->next;
+             
+            if(L1) L1 = L1->next;
+            if(L2) L2 = L2->next;
+        }
+        return root->next;
+    }
+};
+
+int main(){
+    ListNode* L1 = new ListNode();
+    ListNode* L1_1 = new ListNode(2);
+    ListNode* L1_2 = new ListNode(4);
+    ListNode* L1_3 = new ListNode(3);
+    L1->next = L1_1;
+    L1_1->next = L1_2;
+    L1_2->next = L1_3;
+    
+    ListNode* L2 = new ListNode();
+    ListNode* L2_1 = new ListNode(5);
+    ListNode* L2_2 = new ListNode(6);
+    ListNode* L2_3 = new ListNode(4);
+    L2->next = L2_1;
+    L2_1->next = L2_2;
+    L2_2->next = L2_3;
+    
+    Solution sl;
+    ListNode* L3 = sl.addTwoNumbers(L1->next, L2->next);
+    vector<int> result;
+    while(L3){
+        result.push_back(L3->val);
+        L3 = L3->next;
+    }
+    for(int i = result.size()-1; i>=0; i--){
+        std::cout << result[i] << std::endl;
+    }
 }
