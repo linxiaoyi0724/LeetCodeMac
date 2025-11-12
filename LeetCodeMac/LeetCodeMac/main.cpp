@@ -4285,56 +4285,258 @@ int main(){
 */
 
 
-#include <vector>
+/*
+ #include <vector>
+ #include <iostream>
+ using namespace std;
+ struct ListNode {
+ int val;
+ ListNode* next;
+ ListNode(): val(0),next(nullptr){}
+ ListNode(int x): val(x), next(nullptr){}
+ ListNode(int x, ListNode* next): val(x), next(next){}
+ };
+ 
+ class Solution{
+ public:
+ ListNode* mergeTwoLists(ListNode* list1, ListNode* list2){
+ if(!list1){
+ return list2;
+ }
+ if(!list2){
+ return list1;
+ }
+ 
+ if(list1->val < list2->val){
+ list1->next = mergeTwoLists(list1->next, list2);
+ return list1;
+ }else{
+ list2->next = mergeTwoLists(list2->next, list1);
+ return list2;
+ }
+ }
+ };
+ 
+ int main(){
+ ListNode* l1 = new ListNode(1);
+ ListNode* l1_2 = new ListNode(2);
+ ListNode* l1_3 = new ListNode(4);
+ l1->next = l1_2;
+ l1_2->next = l1_3;
+ 
+ ListNode* l2 = new ListNode(1);
+ ListNode* l2_2 = new ListNode(3);
+ ListNode* l2_3 = new ListNode(4);
+ l2->next = l2_2;
+ l2_2->next = l2_3;
+ 
+ Solution sl;
+ ListNode* L3 = sl.mergeTwoLists(l1, l2);
+ 
+ while (L3) {
+ std::cout << L3->val << std::endl;
+ L3 = L3->next;
+ }
+ }
+ */
+
+
+
+
+
+
+/*
+ //Task 59 随机链表的复制
+ 
+ 给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
+ 
+ 构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。
+ 
+ 例如，如果原链表中有 X 和 Y 两个节点，其中 X.random --> Y 。那么在复制链表中对应的两个节点 x 和 y ，同样有 x.random --> y 。
+ 
+ 返回复制链表的头节点。
+ 
+ 用一个由 n 个节点组成的链表来表示输入/输出中的链表。每个节点用一个 [val, random_index] 表示：
+ 
+ val：一个表示 Node.val 的整数。
+ random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
+ 你的代码 只 接受原链表的头节点 head 作为传入参数。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 
+ 输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+ 输出：[[7,null],[13,0],[11,4],[10,2],[1,0]]
+ 示例 2：
+ 
+ 
+ 
+ 输入：head = [[1,1],[2,1]]
+ 输出：[[1,1],[2,1]]
+ 示例 3：
+ 
+ 
+ 
+ 输入：head = [[3,null],[3,0],[3,null]]
+ 输出：[[3,null],[3,0],[3,null]]
+ 
+ 
+ 提示：
+ 
+ 0 <= n <= 1000
+ -104 <= Node.val <= 104
+ Node.random 为 null 或指向链表中的节点。
+ 
+ */
+
+
+
+/*
 #include <iostream>
+#include <unordered_map>
 using namespace std;
-struct ListNode {
+class Node {
+public:
     int val;
-    ListNode* next;
-    ListNode(): val(0),next(nullptr){}
-    ListNode(int x): val(x), next(nullptr){}
-    ListNode(int x, ListNode* next): val(x), next(next){}
+    Node* next;
+    Node* random;
+    
+    Node(int _val):val(_val),next(nullptr), random(nullptr){}
 };
 
 class Solution{
 public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2){
-        if(!list1){
-            return list2;
-        }
-        if(!list2){
-            return list1;
+    unordered_map<Node*, Node*> cacheNode;
+public:
+    Node* copyRandomList(Node* head){
+        if(!head){
+            return nullptr;
         }
         
-        if(list1->val < list2->val){
-            list1->next = mergeTwoLists(list1->next, list2);
-            return list1;
-        }else{
-            list2->next = mergeTwoLists(list2->next, list1);
-            return list2;
+        if(!cacheNode.count(head)){
+            Node* headNew = new Node(head->val);
+            cacheNode[head] = headNew;
+            headNew->next = copyRandomList(head->next);
+            headNew->random = copyRandomList(head->random);
         }
+        return cacheNode[head];
+    }
+};
+
+//head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+int main(){
+    Node* head = new Node(7);
+    Node* head_1 = new Node(13);
+    Node* head_2 = new Node(11);
+    Node* head_3 = new Node(10);
+    Node* head_4 = new Node(1);
+    head->next = head_1;
+    head->random = nullptr;
+    head_1->next = head_2;
+    head_1->random = head;
+    head_2->next = head_3;
+    head_2->random = head_4;
+    head_3->next = head_4;
+    head_3->random = head_2;
+    head_4->random = head;
+    
+    Solution sl;
+    Node* headNew = sl.copyRandomList(head);
+    while (headNew) {
+        std::cout << headNew->val <<std::endl;
+        if (headNew->random){
+            std::cout << headNew->random->val << std::endl;
+        }
+        
+        headNew = headNew->next;
+    }
+ }
+*/
+
+
+
+
+
+
+
+
+/*
+ //Task 60 反转链表2
+ 
+ 给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
+  
+
+ 示例 1：
+
+
+ 输入：head = [1,2,3,4,5], left = 2, right = 4
+ 输出：[1,4,3,2,5]
+ 示例 2：
+
+ 输入：head = [5], left = 1, right = 1
+ 输出：[5]
+  
+
+ 提示：
+
+ 链表中节点数目为 n
+ 1 <= n <= 500
+ -500 <= Node.val <= 500
+ 1 <= left <= right <= n
+*/
+
+
+#include <iostream>
+using namespace std;
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode():val(0),next(nullptr){}
+    ListNode(int x):val(x), next(nullptr){}
+    ListNode(int x, ListNode* next): val(x), next(next){}
+};
+
+
+class Solution{
+public:
+    ListNode* reverseBetween(ListNode* head, int left, int right){
+        ListNode* dummyNode = new ListNode(-1);
+        dummyNode->next = head;
+        ListNode* pre = dummyNode;
+        for(int i = 1; i < left; i++){
+            pre = pre->next;
+        }
+        
+        ListNode* cur = pre->next;
+        for(int i = 0; i < right - left; i++){
+            ListNode* next = cur->next;
+            cur->next = next->next;
+            next->next = pre->next;
+            pre->next = next;
+        }
+        return dummyNode->next;
     }
 };
 
 int main(){
-    ListNode* l1 = new ListNode(1);
-    ListNode* l1_2 = new ListNode(2);
-    ListNode* l1_3 = new ListNode(4);
-    l1->next = l1_2;
-    l1_2->next = l1_3;
-    
-    ListNode* l2 = new ListNode(1);
-    ListNode* l2_2 = new ListNode(3);
-    ListNode* l2_3 = new ListNode(4);
-    l2->next = l2_2;
-    l2_2->next = l2_3;
+    ListNode* head = new ListNode(1);
+    ListNode* head_2 = new ListNode(2);
+    ListNode* head_3 = new ListNode(3);
+    ListNode* head_4 = new ListNode(4);
+    ListNode* head_5 = new ListNode(5);
+    head->next = head_2;
+    head_2->next = head_3;
+    head_3->next = head_4;
+    head_4->next = head_5;
     
     Solution sl;
-    ListNode* L3 = sl.mergeTwoLists(l1, l2);
-    
-    while (L3) {
-        std::cout << L3->val << std::endl;
-        L3 = L3->next;
+    ListNode* headNew = sl.reverseBetween(head, 2, 4);
+    while (headNew) {
+        std::cout << headNew->val << std::endl;
+        headNew = headNew->next;
     }
-    
 }
