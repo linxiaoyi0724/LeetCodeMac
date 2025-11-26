@@ -4469,9 +4469,7 @@ int main(){
  
  给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
   
-
  示例 1：
-
 
  输入：head = [1,2,3,4,5], left = 2, right = 4
  输出：[1,4,3,2,5]
@@ -4490,6 +4488,220 @@ int main(){
 */
 
 
+/*
+ #include <iostream>
+ using namespace std;
+ struct ListNode{
+ int val;
+ ListNode* next;
+ ListNode():val(0),next(nullptr){}
+ ListNode(int x):val(x), next(nullptr){}
+ ListNode(int x, ListNode* next): val(x), next(next){}
+ };
+ 
+ 
+ class Solution{
+ public:
+ ListNode* reverseBetween(ListNode* head, int left, int right){
+ ListNode* dummyNode = new ListNode(-1);
+ dummyNode->next = head;
+ ListNode* pre = dummyNode;
+ for(int i = 1; i < left; i++){
+ pre = pre->next;
+ }
+ 
+ ListNode* cur = pre->next;
+ for(int i = 0; i < right - left; i++){
+ ListNode* next = cur->next;
+ cur->next = next->next;
+ next->next = pre->next;
+ pre->next = next;
+ }
+ return dummyNode->next;
+ }
+ };
+ 
+ int main(){
+ ListNode* head = new ListNode(1);
+ ListNode* head_2 = new ListNode(2);
+ ListNode* head_3 = new ListNode(3);
+ ListNode* head_4 = new ListNode(4);
+ ListNode* head_5 = new ListNode(5);
+ head->next = head_2;
+ head_2->next = head_3;
+ head_3->next = head_4;
+ head_4->next = head_5;
+ 
+ Solution sl;
+ ListNode* headNew = sl.reverseBetween(head, 2, 4);
+ while (headNew) {
+ std::cout << headNew->val << std::endl;
+ headNew = headNew->next;
+ }
+ }
+ */
+
+
+
+
+
+
+
+
+
+
+/*
+ //Task 61 K 个一组翻转链表
+ 
+ 给你链表的头节点 head ，每 k 个节点一组进行翻转，请你返回修改后的链表。
+
+ k 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+ 你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+
+  
+
+ 示例 1：
+
+
+ 输入：head = [1,2,3,4,5], k = 2
+ 输出：[2,1,4,3,5]
+ 示例 2：
+
+
+
+ 输入：head = [1,2,3,4,5], k = 3
+ 输出：[3,2,1,4,5]
+  
+
+ 提示：
+ 链表中的节点数目为 n
+ 1 <= k <= n <= 5000
+ 0 <= Node.val <= 1000
+*/
+
+
+
+/*
+#include <iostream>
+using namespace std;
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode():val(0),next(nullptr){}
+    ListNode(int x): val(x),next(nullptr){}
+    ListNode(int x, ListNode* next):val(x),next(next){}
+};
+
+class Solution{
+public:
+    
+    std::pair<ListNode*, ListNode*> myReverse(ListNode* head, ListNode* tail){
+        ListNode* prev = tail->next;
+        ListNode* pre = head;
+        while(tail != prev){
+            ListNode* next = pre->next;
+            pre->next = prev;
+            prev = pre;
+            pre = next;
+        }
+        return{tail, head};
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k){
+        ListNode* hair = new ListNode(0);
+        hair->next = head;
+        ListNode* pre = hair;
+        
+        while (head) {
+            ListNode* tail = pre;
+            
+            for(int i = 0; i < k; i++){
+                tail = tail->next;
+                if(!tail){
+                    return hair->next;
+                }
+            }
+            
+            ListNode* next = tail->next;
+            tie(head, tail) = myReverse(head, tail);
+            pre->next = head;
+            tail->next = next;
+            pre = tail;
+            head = next;
+            
+        }
+        return hair->next;
+    }
+};
+
+//输入：head = [1,2,3,4,5], k = 2
+//输出：[2,1,4,3,5]
+int main(){
+    ListNode* head = new ListNode(1);
+    ListNode* head_2 = new ListNode(2);
+    ListNode* head_3 = new ListNode(3);
+    ListNode* head_4 = new ListNode(4);
+    ListNode* head_5 = new ListNode(5);
+    
+    head->next = head_2;
+    head_2->next = head_3;
+    head_3->next = head_4;
+    head_4->next = head_5;
+    
+    Solution sl;
+    ListNode* headNew = sl.reverseKGroup(head, 2);
+    while (headNew) {
+        std::cout << headNew->val <<std::endl;
+        headNew = headNew->next;
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+ //Task 62 删除链表的倒数第N个节点
+ 
+ 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+  
+
+ 示例 1：
+
+
+ 输入：head = [1,2,3,4,5], n = 2
+ 输出：[1,2,3,5]
+ 示例 2：
+
+ 输入：head = [1], n = 1
+ 输出：[]
+ 示例 3：
+
+ 输入：head = [1,2], n = 1
+ 输出：[1]
+  
+
+ 提示：
+
+ 链表中结点的数目为 sz
+ 1 <= sz <= 30
+ 0 <= Node.val <= 100
+ 1 <= n <= sz
+  
+
+ 进阶：你能尝试使用一趟扫描实现吗？
+ 
+ */
+
+
 #include <iostream>
 using namespace std;
 struct ListNode{
@@ -4500,28 +4712,31 @@ struct ListNode{
     ListNode(int x, ListNode* next): val(x), next(next){}
 };
 
-
 class Solution{
 public:
-    ListNode* reverseBetween(ListNode* head, int left, int right){
-        ListNode* dummyNode = new ListNode(-1);
-        dummyNode->next = head;
-        ListNode* pre = dummyNode;
-        for(int i = 1; i < left; i++){
-            pre = pre->next;
+    int getListLength(ListNode* head){
+        int length = 0;
+        while (head) {
+            length++;
+            head = head->next;
         }
-        
-        ListNode* cur = pre->next;
-        for(int i = 0; i < right - left; i++){
-            ListNode* next = cur->next;
-            cur->next = next->next;
-            next->next = pre->next;
-            pre->next = next;
+        return length;
+    }
+    ListNode* removeNthFromEnd(ListNode* head, int n){
+        ListNode* headNew = new ListNode(0, head);
+        ListNode* p = headNew;
+        int listLength = getListLength(head);
+        for(int i = 1; i < listLength - n + 1; i++){
+            p = p->next;
         }
-        return dummyNode->next;
+        p->next = p->next->next;
+        return headNew->next;
     }
 };
 
+
+//输入：head = [1,2,3,4,5], n = 2
+//输出：[1,2,3,5]
 int main(){
     ListNode* head = new ListNode(1);
     ListNode* head_2 = new ListNode(2);
@@ -4534,7 +4749,7 @@ int main(){
     head_4->next = head_5;
     
     Solution sl;
-    ListNode* headNew = sl.reverseBetween(head, 2, 4);
+    ListNode* headNew = sl.removeNthFromEnd(head, 2);
     while (headNew) {
         std::cout << headNew->val << std::endl;
         headNew = headNew->next;
