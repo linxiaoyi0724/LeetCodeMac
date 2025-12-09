@@ -4702,6 +4702,7 @@ int main(){
  */
 
 
+/*
 #include <iostream>
 using namespace std;
 struct ListNode{
@@ -4735,8 +4736,6 @@ public:
 };
 
 
-//输入：head = [1,2,3,4,5], n = 2
-//输出：[1,2,3,5]
 int main(){
     ListNode* head = new ListNode(1);
     ListNode* head_2 = new ListNode(2);
@@ -4753,5 +4752,175 @@ int main(){
     while (headNew) {
         std::cout << headNew->val << std::endl;
         headNew = headNew->next;
+    }
+}
+*/
+
+
+
+
+/*
+ //Task 63 删除排序链表中的重复元素 II
+ 
+ 给定一个已排序的链表的头 head ， 删除原始链表中所有重复数字的节点，只留下不同的数字 。返回 已排序的链表 。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：head = [1,2,3,3,4,4,5]
+ 输出：[1,2,5]
+ 示例 2：
+ 
+ 
+ 输入：head = [1,1,1,2,3]
+ 输出：[2,3]
+ */
+
+
+/*
+#include <iostream>
+using namespace std;
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode(): val(0), next(nullptr){}
+    ListNode(int x): val(x), next(nullptr){}
+    ListNode(int x, ListNode* next):val(x), next(next){}
+};
+
+class Solution{
+public:
+    ListNode* deleteDuplicates(ListNode* head){
+        ListNode* preHead = new ListNode(0);
+        preHead->next = head;
+        ListNode* cur = preHead;
+        while(cur->next && cur->next->next){
+            if(cur->next->val == cur->next->next->val){
+                int temp = cur->next->val;
+                while(cur->next && cur->next->val == temp){
+                    cur->next = cur->next->next;
+                }
+            }else{
+                cur = cur->next;
+            }
+        }
+        return preHead->next;
+    }
+};
+
+
+int main(){
+    ListNode* head = new ListNode(1);
+    ListNode* head_2 = new ListNode(2);
+    ListNode* head_3 = new ListNode(3);
+    ListNode* head_4 = new ListNode(3);
+    ListNode* head_5 = new ListNode(4);
+    ListNode* head_6 = new ListNode(4);
+    ListNode* head_7 = new ListNode(5);
+    head->next = head_2;
+    head_2->next = head_3;
+    head_3->next = head_4;
+    head_4->next = head_5;
+    head_5->next = head_6;
+    head_6->next = head_7;
+    
+    Solution sl;
+    auto result_head = sl.deleteDuplicates(head);
+    while(result_head){
+        std::cout << result_head->val <<std::endl;
+        result_head = result_head->next;
+    }
+}
+*/
+
+
+
+
+
+/*
+ //Task 64 旋转链表
+ 给你一个链表的头节点 head ，旋转链表，将链表每个节点向右移动 k 个位置。
+
+  
+
+ 示例 1：
+
+
+ 输入：head = [1,2,3,4,5], k = 2
+ 输出：[4,5,1,2,3]
+ 示例 2：
+
+
+ 输入：head = [0,1,2], k = 4
+ 输出：[2,0,1]
+*/
+
+
+#include <iostream>
+#include <math.h>
+using namespace std;
+struct ListNode{
+    int val;
+    ListNode* next;
+    ListNode():val(0),next(nullptr){}
+    ListNode(int val):val(val),next(nullptr){}
+    ListNode(int val, ListNode* next):val(val),next(next){}
+};
+
+
+class Solution{
+public:
+    ListNode* rotateRight(ListNode* head, int k){
+        if(k == 0 || !head || !head->next){
+            return head;
+        }
+        
+        int listLength = 1;
+        ListNode* iter = head;
+        while (iter->next) {
+            listLength++;
+            iter = iter->next;
+        }
+        
+        int add =listLength-k%listLength;
+        if (add == listLength){
+            return head;
+        }
+        
+        iter->next = head;
+        while (add--) {
+            iter = iter->next;
+        }
+        
+        ListNode* ret = iter->next;
+        iter->next = nullptr;
+        return ret;
+    }
+};
+
+//输入：head = [1,2,3,4,5], k = 2
+//输出：[4,5,1,2,3]
+//示例 2：
+
+int main(){
+    ListNode* head = new ListNode(0);
+    ListNode* head_2 = new ListNode(1);
+    ListNode* head_3 = new ListNode(2);
+    ListNode* head_4 = new ListNode(4);
+    ListNode* head_5 = new ListNode(5);
+    
+    head->next = head_2;
+    head_2->next = head_3;
+    head_3->next = head_4;
+    head_4->next = head_5;
+    
+    Solution sl;
+    ListNode* headResult = sl.rotateRight(head, 2);
+    
+    while (headResult) {
+        std::cout << headResult->val << std::endl;
+        headResult = headResult->next;
     }
 }
