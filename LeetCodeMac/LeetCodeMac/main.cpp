@@ -4950,64 +4950,247 @@ int main(){
  输出：[1,2]
  */
 
+/*
+ #include <iostream>
+ using namespace std;
+ struct ListNode{
+ int val;
+ ListNode* next;
+ ListNode():val(0),next(nullptr){}
+ ListNode(int val): val(val),next(nullptr){}
+ ListNode(int val, ListNode* next):val(val),next(next){}
+ };
+ 
+ class Solution{
+ public:
+ ListNode* partition(ListNode* head, int x){
+ ListNode* smallHead = new ListNode(0);
+ ListNode* small = smallHead;
+ ListNode* largeHead = new ListNode(0);
+ ListNode* large = largeHead;
+ 
+ while(head){
+ if(head->val < x){
+ small->next = head;
+ small = small->next;
+ }else{
+ large->next = head;
+ large = large->next;
+ }
+ head = head->next;
+ }
+ 
+ large->next = nullptr;
+ small->next = largeHead->next;
+ return smallHead->next;
+ }
+ };
+ 
+ int main(){
+ ListNode* head = new ListNode(1);
+ ListNode* head_2 = new ListNode(4);
+ ListNode* head_3 = new ListNode(3);
+ ListNode* head_4 = new ListNode(2);
+ ListNode* head_5 = new ListNode(5);
+ ListNode* head_6 = new ListNode(2);
+ 
+ head->next = head_2;
+ head_2->next = head_3;
+ head_3->next = head_4;
+ head_4->next = head_5;
+ head_5->next = head_6;
+ 
+ Solution sl;
+ ListNode* resultHead = sl.partition(head, 3);
+ while (resultHead) {
+ std::cout << resultHead->val <<std::endl;
+ resultHead = resultHead->next;
+ }
+ 
+ }
+ */
+
+
+
+
+
+
+/*
+ //Task 66 LRU 缓存
+ 请你设计并实现一个满足  LRU (最近最少使用) 缓存 约束的数据结构。
+ 实现 LRUCache 类：
+ LRUCache(int capacity) 以 正整数 作为容量 capacity 初始化 LRU 缓存
+ int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。
+ void put(int key, int value) 如果关键字 key 已经存在，则变更其数据值 value ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。
+ 函数 get 和 put 必须以 O(1) 的平均时间复杂度运行。
+
+ 示例：
+
+ 输入
+ ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+ [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+ 输出
+ [null, null, null, 1, null, -1, null, -1, 3, 4]
+
+ 解释
+ LRUCache lRUCache = new LRUCache(2);
+ lRUCache.put(1, 1); // 缓存是 {1=1}
+ lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+ lRUCache.get(1);    // 返回 1
+ lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+ lRUCache.get(2);    // 返回 -1 (未找到)
+ lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+ lRUCache.get(1);    // 返回 -1 (未找到)
+ lRUCache.get(3);    // 返回 3
+ lRUCache.get(4);    // 返回 4
+ 
+*/
+
+
+/*
+ #include <unordered_map>
+ #include <iostream>
+ using namespace std;
+ 
+ struct DListNode{
+ int key, value;
+ DListNode* pre;
+ DListNode* next;
+ DListNode():key(0),value(0),pre(nullptr),next(nullptr){}
+ DListNode(int _key, int _value): key(_key), value(_value),pre(nullptr),next(nullptr){}
+ };
+ 
+ class LRUCache{
+ private:
+ int capacity;
+ int size;
+ DListNode* head;
+ DListNode* tail;
+ unordered_map<int, DListNode*> cache;
+ 
+ public:
+ LRUCache(int _capacity):capacity(_capacity),size(0){
+ head = new DListNode();
+ tail = new DListNode();
+ head->next = tail;
+ tail->pre = head;
+ }
+ 
+ int get(int key){
+ if(!cache.count(key)){
+ return -1;
+ }
+ DListNode* node = cache[key];
+ moveToHead(node);
+ return node->value;
+ }
+ 
+ void put(int key, int value){
+ if(!cache.count(key)){
+ DListNode* node = new DListNode(key, value);
+ cache[key] = node;
+ addToHead(node);
+ size++;
+ if(size > capacity){
+ DListNode* node = removeTail();
+ cache.erase(node->key);
+ delete node;
+ size--;
+ }
+ }
+ else{
+ DListNode* node = cache[key];
+ node->value = value;
+ moveToHead(node);
+ }
+ }
+ 
+ void addToHead(DListNode* node){
+ node->next = head->next;
+ head->next->pre = node;
+ head->next = node;
+ node->pre = head;
+ }
+ 
+ void removeNode(DListNode* node){
+ node->pre->next = node->next;
+ node->next->pre = node->pre;
+ 
+ }
+ 
+ void moveToHead(DListNode* node){
+ removeNode(node);
+ addToHead(node);
+ }
+ 
+ DListNode* removeTail(){
+ DListNode* node = tail->pre;
+ removeNode(node);
+ return node;
+ }
+ 
+ };
+ //LRUCache lRUCache = new LRUCache(2);
+ //lRUCache.put(1, 1); // 缓存是 {1=1}
+ //lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+ //lRUCache.get(1);    // 返回 1
+ //lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+ //lRUCache.get(2);    // 返回 -1 (未找到)
+ //lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+ //lRUCache.get(1);    // 返回 -1 (未找到)
+ //lRUCache.get(3);    // 返回 3
+ //lRUCache.get(4);    // 返回 4
+ 
+ int main(){
+ LRUCache* lru = new LRUCache(1);
+ lru->put(2,1);
+ //    lru->put(2, 2);
+ std::cout << lru->get(2) << std::endl;
+ }
+ 
+*/
+
+
+
+
+/*
+ //Task 66 二叉树的最大深度
+ 给定一个二叉树 root ，返回其最大深度。
+
+ 二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
+
+  
+
+ 示例 1：
+
+ 输入：root = [3,9,20,null,null,15,7]
+ 输出：3
+ 示例 2：
+
+ 输入：root = [1,null,2]
+ 输出：2
+*/
 #include <iostream>
 using namespace std;
-struct ListNode{
+struct TreeNode{
     int val;
-    ListNode* next;
-    ListNode():val(0),next(nullptr){}
-    ListNode(int val): val(val),next(nullptr){}
-    ListNode(int val, ListNode* next):val(val),next(next){}
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right): val(_val), left(_left), right(_right){}
 };
 
 class Solution{
 public:
-    ListNode* partition(ListNode* head, int x){
-        ListNode* smallHead = new ListNode(0);
-        ListNode* small = smallHead;
-        ListNode* largeHead = new ListNode(0);
-        ListNode* large = largeHead;
-        
-        while(head){
-            if(head->val < x){
-                small->next = head;
-                small = small->next;
-            }else{
-                large->next = head;
-                large = large->next;
-            }
-            head = head->next;
+    int maxDepth(TreeNode* root){
+        if(!root){
+            return 0;
         }
-        
-        large->next = nullptr;
-        small->next = largeHead->next;
-        return smallHead->next;
+        return std::max(maxDepth(root->left), maxDepth(root->right)) + 1;
     }
 };
 
-//
-//输入：head = [1,4,3,2,5,2], x = 3
-//输出：[1,2,2,4,3,5]
-//示例 2：
 int main(){
-    ListNode* head = new ListNode(1);
-    ListNode* head_2 = new ListNode(4);
-    ListNode* head_3 = new ListNode(3);
-    ListNode* head_4 = new ListNode(2);
-    ListNode* head_5 = new ListNode(5);
-    ListNode* head_6 = new ListNode(2);
-    
-    head->next = head_2;
-    head_2->next = head_3;
-    head_3->next = head_4;
-    head_4->next = head_5;
-    head_5->next = head_6;
-    
-    Solution sl;
-    ListNode* resultHead = sl.partition(head, 3);
-    while (resultHead) {
-        std::cout << resultHead->val <<std::endl;
-        resultHead = resultHead->next;
-    }
     
 }
