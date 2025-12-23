@@ -5170,6 +5170,8 @@ int main(){
  输入：root = [1,null,2]
  输出：2
 */
+
+/*
 #include <iostream>
 using namespace std;
 struct TreeNode{
@@ -5194,3 +5196,429 @@ public:
 int main(){
     
 }
+*/
+
+
+
+
+/*
+ //Task 67 相同的树
+ 给你两棵二叉树的根节点 p 和 q ，编写一个函数来检验这两棵树是否相同。
+
+ 如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+  
+
+ 示例 1：
+
+
+ 输入：p = [1,2,3], q = [1,2,3]
+ 输出：true
+ 示例 2：
+
+
+ 输入：p = [1,2], q = [1,null,2]
+ 输出：false
+ 示例 3：
+
+
+ 输入：p = [1,2,1], q = [1,1,2]
+ 输出：false
+ */
+
+/*
+#include <iostream>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _value):val(_value),left(nullptr),right(nullptr){}
+    TreeNode(int _value, TreeNode* _left, TreeNode* _right):val(_value),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q){
+        if(p == nullptr && q == nullptr){
+            return true;
+        }else if(p == nullptr || q == nullptr){
+            return false;
+        }else if(p->val != q->val){
+            return false;
+        }else{
+            return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+        }
+    }
+};
+
+int main(){
+    TreeNode* p = new TreeNode(1);
+    p->left = new TreeNode(3);
+    p->right = new TreeNode(3);
+    
+    TreeNode* q = new TreeNode(1);
+    q->left = new TreeNode(2);
+    q->right = new TreeNode(3);
+    
+    Solution sl;
+    std::cout << sl.isSameTree(p, q) << std::endl;
+}
+*/
+
+
+
+/*
+ //Task 68 翻转二叉树
+ 
+ 给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 
+ 输入：root = [4,2,7,1,3,6,9]
+ 输出：[4,7,2,9,6,3,1]
+ 示例 2：
+ 
+ 
+ 
+ 输入：root = [2,1,3]
+ 输出：[2,3,1]
+ 示例 3：
+ 
+ 输入：root = []
+ 输出：[]
+ */
+
+/*
+#include <iostream>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    TreeNode* invertTree(TreeNode* root){
+        if(!root){
+            return nullptr;
+        }
+        TreeNode* left = invertTree(root->left);
+        TreeNode* right = invertTree(root->right);
+        root->left = right;
+        root->right = left;
+        return root;
+    }
+};
+
+
+int main(){
+    TreeNode* root = new TreeNode(2);
+    root->left = new TreeNode(1);
+    root->right = new TreeNode(3);
+    
+    Solution sl;
+    TreeNode* rootInvert =  sl.invertTree(root);
+    std::cout << rootInvert->val << std::endl;
+    std::cout << rootInvert->left->val << std::endl;
+    std::cout << rootInvert->right->val <<std::endl;
+}
+*/
+
+
+
+
+/*
+ //Task 69 对称二叉树
+ 给你一个二叉树的根节点 root ， 检查它是否轴对称。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [1,2,2,3,4,4,3]
+ 输出：true
+ 示例 2：
+ 
+ 
+ 输入：root = [1,2,2,null,3,null,3]
+ 输出：false
+ */
+
+/*
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    bool isMirror(TreeNode* p, TreeNode* q){
+        if(!p && !q){
+            return true;
+        }
+        if(!p || !q){
+            return false;
+        }
+        return p->val == q->val && isMirror(p->right, q->left) && isMirror(p->left, q->right);
+    }
+    bool isSymmetric(TreeNode* root){
+        return isMirror(root->left, root->right);
+    }
+};
+*/
+
+
+
+
+
+/*
+ //Task 70 从前序与中序遍历序列构造二叉树
+ 
+ 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+ 
+ 
+ 
+ 示例 1:
+ 
+ 
+ 输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+ 输出: [3,9,20,null,null,15,7]
+ 示例 2:
+ 
+ 输入: preorder = [-1], inorder = [-1]
+ 输出: [-1]
+ */
+
+
+/*
+#include <vector>
+#include <unordered_map>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    unordered_map<int, int> inorderMap;
+    TreeNode* buildMyTree(vector<int>& preorder, vector<int>& inorder, int preorderLeft, int preorderRight, int inorderLeft, int inorderRight){
+        if (preorderLeft > preorderRight){
+            return nullptr;
+        }
+        
+        // 查找前序序列中根节点序号
+        int preoderRootSqNum = preorderLeft;
+        
+        // 查找中序序列中根节点序号
+        int inorderRootSqNum = inorderMap[preorder[preoderRootSqNum]];
+        
+        // 创建根节点
+        TreeNode* root = new TreeNode(preorder[preoderRootSqNum]);
+        
+        // 查询根节点下左子树数量
+        int sizeLeftTree = inorderRootSqNum - inorderLeft;
+        
+        // 递归构建左子树
+        root->left = buildMyTree(preorder, inorder, preoderRootSqNum+1, preoderRootSqNum+sizeLeftTree, inorderLeft, inorderRootSqNum-1);
+        // 递归构建右子树
+        root->right = buildMyTree(preorder, inorder, preoderRootSqNum+sizeLeftTree+1, preorderRight, inorderRootSqNum+1, inorderRight);
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder){
+        int n = preorder.size();
+        for(int i = 0; i < n; i++){
+            inorderMap[inorder[i]] = i;
+        }
+        return buildMyTree(preorder, inorder, 0, n-1, 0, n-1);
+    }
+};
+*/
+
+
+
+
+
+
+
+
+/*
+ //Task 71 从中序与后序遍历序列构造二叉树
+ 给定两个整数数组 inorder 和 postorder ，其中 inorder 是二叉树的中序遍历， postorder 是同一棵树的后序遍历，请你构造并返回这颗 二叉树 。
+ 
+ 
+ 
+ 示例 1:
+ 
+ 
+ 输入：inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+ 输出：[3,9,20,null,null,15,7]
+ 示例 2:
+ 
+ 输入：inorder = [-1], postorder = [-1]
+ 输出：[-1]
+ */
+
+
+/*
+#include <vector>
+#include <unordered_map>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    int postIdx;
+    unordered_map<int, int> inorderMap;
+    
+    TreeNode* buildMyTree(int inLeft, int inRight, vector<int>& inorder, vector<int>& postorder){
+        // 如果左子树坐标大于右子树坐标，则返回kong
+        if (inLeft > inRight){
+            return nullptr;
+        }
+        
+        // 获取根节点的值
+        int rootValue = postorder[postIdx];
+        
+        // 获取中序数组中根节点的坐标
+        int inorderRootSeqNum = inorderMap[rootValue];
+        
+        // 构建根节点
+        TreeNode* root = new TreeNode(rootValue);
+        
+        postIdx--;
+        
+        // 构建右子树
+        root->right = buildMyTree(inorderRootSeqNum+1, inRight, inorder, postorder);
+        root->left = buildMyTree(inLeft, inorderRootSeqNum-1, inorder, postorder);
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder){
+        // 获取后续遍历数组根节点坐标
+        postIdx = (int)inorder.size()-1;
+        
+        int idx = 0;
+        // 创建中序遍历坐标与值映射数组
+        for(auto& value : inorder){
+            inorderMap[value] = idx++;
+        }
+        
+        // 创建子树
+        return buildMyTree(0, postIdx, inorder, postorder);
+    }
+};
+*/
+
+
+
+
+
+/*
+ //Task 72 填充每个节点的下一个右侧节点指针 II
+ 
+ 给定一个二叉树：
+ 
+ struct Node {
+ int val;
+ Node *left;
+ Node *right;
+ Node *next;
+ }
+ 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL 。
+ 
+ 初始状态下，所有 next 指针都被设置为 NULL 。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [1,2,3,4,5,null,7]
+ 输出：[1,#,2,3,#,4,5,7,#]
+ 解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next 指针连接），'#' 表示每层的末尾。
+ 示例 2：
+ 
+ 输入：root = []
+ 输出：[]
+ */
+
+#include <queue>
+using namespace std;
+class Node{
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+    
+    Node(): val(0),left(nullptr),right(nullptr),next(nullptr){}
+    Node(int _val): val(_val),left(nullptr),right(nullptr){}
+    Node(int _val, Node* _left, Node* _right, Node* _next): val(_val),left(_left),right(_right),next(_next){}
+};
+
+class Solution{
+public:
+    Node* connect(Node* root){
+        // 判断根节点是否为空
+        if(!root){
+            return nullptr;
+        }
+        
+        // 创建队列并存储第一个根节点
+        queue<Node*> q;
+        q.push(root);
+        
+        // 循环获取二叉树每层节点
+        while(!q.empty()){
+            int n = int(q.size());
+            Node* lastNode = nullptr;
+            for(int i = 1; i <= n; i++){
+                Node* f = q.front();
+                q.pop();
+                
+                // 将左右子树送入队列
+                if(f->left){
+                    q.push(f->left);
+                }
+                if(f->right){
+                    q.push(f->right);
+                }
+                
+                if(i != 1){
+                    lastNode->next = f;
+                }
+                lastNode = f;
+            }
+        }
+        return root;
+    }
+};
+
