@@ -5570,6 +5570,7 @@ public:
  输出：[]
  */
 
+/*
 #include <queue>
 using namespace std;
 class Node{
@@ -5621,4 +5622,75 @@ public:
         return root;
     }
 };
+*/
 
+
+
+
+/*
+ //Task 73 二叉树展开为链表
+ 给你二叉树的根结点 root ，请你将它展开为一个单链表：
+ 
+ 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+ 展开后的单链表应该与二叉树 先序遍历 顺序相同。
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [1,2,5,3,4,null,6]
+ 输出：[1,null,2,null,3,null,4,null,5,null,6]
+ 示例 2：
+ 
+ 输入：root = []
+ 输出：[]
+ 示例 3：
+ 
+ 输入：root = [0]
+ 输出：[0]
+ 
+ 
+ 提示：
+ 
+ 树中结点数在范围 [0, 2000] 内
+ -100 <= Node.val <= 100
+ */
+
+
+#include <vector>
+using namespace std;
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    void preorderTraversal(TreeNode* root, vector<TreeNode*> & l){
+        if(root){
+            l.emplace_back(root);
+            preorderTraversal(root->left, l);
+            preorderTraversal(root->right, l);
+        }
+    }
+    
+    void flatten(TreeNode* root){
+        // 创建数组存储节点
+        vector<TreeNode*> list;
+        
+        //前序遍历二叉树并将节点存储在数组中
+        preorderTraversal(root, list);
+        
+        //串联数组中的节点
+        int n = int(list.size());
+        for(int i = 1; i < n; i++){
+            TreeNode* pre = list.at(i-1), *next = list.at(i);
+            pre->left = nullptr;
+            pre->right = next;
+        }
+    }
+};
