@@ -5657,6 +5657,7 @@ public:
  */
 
 
+/*
 #include <vector>
 using namespace std;
 struct TreeNode {
@@ -5692,5 +5693,431 @@ public:
             pre->left = nullptr;
             pre->right = next;
         }
+    }
+};
+*/
+
+
+
+
+
+/*
+ //Task 74 路径总和
+ 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。
+ 
+ 叶子节点 是指没有子节点的节点。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+ 输出：true
+ 解释：等于目标和的根节点到叶节点路径如上图所示。
+ 示例 2：
+ 
+ 
+ 输入：root = [1,2,3], targetSum = 5
+ 输出：false
+ 解释：树中存在两条根节点到叶子节点的路径：
+ (1 --> 2): 和为 3
+ (1 --> 3): 和为 4
+ 不存在 sum = 5 的根节点到叶子节点的路径。
+ 示例 3：
+ 
+ 输入：root = [], targetSum = 0
+ 输出：false
+ 解释：由于树是空的，所以不存在根节点到叶子节点的路径。
+ */
+
+
+/*
+ struct TreeNode{
+ int val;
+ TreeNode* left;
+ TreeNode* right;
+ TreeNode():val(0),left(nullptr),right(nullptr){}
+ TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+ TreeNode(int _val, TreeNode* _left, TreeNode* _right): val(_val),left(_left),right(_right){}
+ };
+ 
+ class Solution{
+ public:
+ bool hasPathSum(TreeNode* root, int targetSum){
+ if(!root){
+ return false;
+ }
+ if(!root->left && !root->right){
+ return root->val == targetSum;
+ }
+ return hasPathSum(root->left, targetSum-root->val) || hasPathSum(root->right, targetSum-root->val);
+ }
+ };
+ */
+
+
+
+
+/*
+ //Task 75 求根节点到叶节点数字之和
+ 给你一个二叉树的根节点 root ，树中每个节点都存放有一个 0 到 9 之间的数字。
+ 每条从根节点到叶节点的路径都代表一个数字：
+
+ 例如，从根节点到叶节点的路径 1 -> 2 -> 3 表示数字 123 。
+ 计算从根节点到叶节点生成的 所有数字之和 。
+
+ 叶节点 是指没有子节点的节点。
+
+  
+
+ 示例 1：
+
+
+ 输入：root = [1,2,3]
+ 输出：25
+ 解释：
+ 从根到叶子节点路径 1->2 代表数字 12
+ 从根到叶子节点路径 1->3 代表数字 13
+ 因此，数字总和 = 12 + 13 = 25
+ 示例 2：
+
+
+ 输入：root = [4,9,0,5,1]
+ 输出：1026
+ 解释：
+ 从根到叶子节点路径 4->9->5 代表数字 495
+ 从根到叶子节点路径 4->9->1 代表数字 491
+ 从根到叶子节点路径 4->0 代表数字 40
+ 因此，数字总和 = 495 + 491 + 40 = 1026
+*/
+
+
+/*
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    int dfs(TreeNode* root, int preSum){
+        // 当根节点为空时，结束递归，返回0
+        if(!root){
+            return 0;
+        }
+        
+        // 计算截止至当前根节点的总和
+        int sum = preSum * 10 + root->val;
+        
+        // 当当前节点为叶子节点时，返回当前的总和
+        if(!root->left && !root->right){
+            return sum;
+        }
+        
+        // 递归相加左右节点的值
+        return dfs(root->left, sum) + dfs(root->right, sum);
+    }
+
+    int sumNumbers(TreeNode* root){
+        // 深度优先遍历值
+        return dfs(root, 0);
+    }
+};
+*/
+
+
+
+/*
+ //Task 76 二叉树中的最大路径和
+ 二叉树中的 路径 被定义为一条节点序列，序列中每对相邻节点之间都存在一条边。同一个节点在一条路径序列中 至多出现一次 。该路径 至少包含一个 节点，且不一定经过根节点。
+ 
+ 路径和 是路径中各节点值的总和。
+ 
+ 给你一个二叉树的根节点 root ，返回其 最大路径和 。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [1,2,3]
+ 输出：6
+ 解释：最优路径是 2 -> 1 -> 3 ，路径和为 2 + 1 + 3 = 6
+ 示例 2：
+ 
+ 
+ 输入：root = [-10,9,20,null,null,15,7]
+ 输出：42
+ 解释：最优路径是 15 -> 20 -> 7 ，路径和为 15 + 20 + 7 = 42
+ */
+
+
+/*
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(): val(0), left(nullptr),right(nullptr){}
+    TreeNode(int _val): val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right): val(_val), left(_left), right(_right){}
+};
+
+#include <iostream>
+using namespace std;
+class Solution{
+public:
+    int maxSum = INT_MIN;
+    
+    int maxGain(TreeNode* root){
+        // 如果root为空，则返回0
+        if (!root){
+            return 0;
+        }
+        
+        // 递归获取左右子节点的值
+        int leftGain = max(maxGain(root->left), 0);
+        int rightGain = max(maxGain(root->right), 0);
+        
+        // 获取当前最大路径和
+        int curPathSum = root->val + leftGain + rightGain;
+        
+        // 记录最大路径和
+        maxSum = max(curPathSum, maxSum);
+        
+        return root->val + max(leftGain, rightGain);
+    }
+    
+    int maxPathSum(TreeNode* root){
+        maxGain(root);
+        return maxSum;
+    }
+};
+*/
+
+
+/*
+ //Task 77 二叉搜索树迭代器
+ 
+ 实现一个二叉搜索树迭代器类BSTIterator ，表示一个按中序遍历二叉搜索树（BST）的迭代器：
+ BSTIterator(TreeNode root) 初始化 BSTIterator 类的一个对象。BST 的根节点 root 会作为构造函数的一部分给出。指针应初始化为一个不存在于 BST 中的数字，且该数字小于 BST 中的任何元素。
+ boolean hasNext() 如果向指针右侧遍历存在数字，则返回 true ；否则返回 false 。
+ int next()将指针向右移动，然后返回指针处的数字。
+ 注意，指针初始化为一个不存在于 BST 中的数字，所以对 next() 的首次调用将返回 BST 中的最小元素。
+
+ 你可以假设 next() 调用总是有效的，也就是说，当调用 next() 时，BST 的中序遍历中至少存在一个下一个数字。
+
+  
+
+ 示例：
+
+
+ 输入
+ ["BSTIterator", "next", "next", "hasNext", "next", "hasNext", "next", "hasNext", "next", "hasNext"]
+ [[[7, 3, 15, null, null, 9, 20]], [], [], [], [], [], [], [], [], []]
+ 输出
+ [null, 3, 7, true, 9, true, 15, true, 20, false]
+
+ 解释
+ BSTIterator bSTIterator = new BSTIterator([7, 3, 15, null, null, 9, 20]);
+ bSTIterator.next();    // 返回 3
+ bSTIterator.next();    // 返回 7
+ bSTIterator.hasNext(); // 返回 True
+ bSTIterator.next();    // 返回 9
+ bSTIterator.hasNext(); // 返回 True
+ bSTIterator.next();    // 返回 15
+ bSTIterator.hasNext(); // 返回 True
+ bSTIterator.next();    // 返回 20
+ bSTIterator.hasNext(); // 返回 False
+  
+
+ 提示：
+
+ 树中节点的数目在范围 [1, 105] 内
+ 0 <= Node.val <= 106
+ 最多调用 105 次 hasNext 和 next 操作
+*/
+
+
+/*
+#include <vector>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(): val(0), left(nullptr), right(nullptr){}
+    TreeNode(int _val): val(_val), left(nullptr), right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val), left(_left), right(_right){}
+};
+
+class BSTIterator{
+    
+public:
+    void inOrder(TreeNode* root, vector<int>& res){
+        if(!root){
+            return;
+        }
+        inOrder(root->left, res);
+        res.emplace_back(root->val);
+        inOrder(root->right, res);
+    }
+    
+    vector<int> travealInOrder(TreeNode* root){
+        vector<int> res;
+        inOrder(root, res);
+        return res;
+    }
+    
+    int idx;
+    vector<int> arr;
+    
+    BSTIterator(TreeNode* root):idx(0),arr(travealInOrder(root)){
+        // 先进行中序遍历获取中序遍历数组
+        
+    }
+    
+    int next(){
+        return arr[idx++];
+    }
+    
+    bool hasNext(){
+        return idx < arr.size();
+    }
+};
+*/
+
+
+
+
+
+
+
+/*
+ //Task 78 完全二叉树的节点个数
+ 
+ 给你一棵 完全二叉树 的根节点 root ，求出该树的节点个数。
+ 
+ 完全二叉树 的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层（从第 0 层开始），则该层包含 1~ 2h 个节点。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [1,2,3,4,5,6]
+ 输出：6
+ 示例 2：
+ 
+ 输入：root = []
+ 输出：0
+ 示例 3：
+ 
+ 输入：root = [1]
+ 输出：1
+ 
+ 
+ 提示：
+ 
+ 树中节点的数目范围是[0, 5 * 104]
+ 0 <= Node.val <= 5 * 104
+ 题目数据保证输入的树是 完全二叉树
+ */
+
+
+/*
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(): val(0), left(nullptr), right(nullptr){}
+    TreeNode(int _val): val(_val), left(nullptr), right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    int countNodes(TreeNode* root){
+        if(!root){
+            return 0;
+        }
+        return countNodes(root->left) + countNodes(root->right) + 1;
+    }
+};
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+ //Task 79 二叉树的最近公共祖先
+ 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+ 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+  
+
+ 示例 1：
+
+
+ 输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+ 输出：3
+ 解释：节点 5 和节点 1 的最近公共祖先是节点 3 。
+ 示例 2：
+
+
+ 输入：root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+ 输出：5
+ 解释：节点 5 和节点 4 的最近公共祖先是节点 5 。因为根据定义最近公共祖先节点可以为节点本身。
+ 示例 3：
+
+ 输入：root = [1,2], p = 1, q = 2
+ 输出：1
+*/
+
+
+
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    TreeNode* ans;
+    
+    // 深度优先搜索判断是否存在
+    bool dfs(TreeNode* root, TreeNode* p, TreeNode* q){
+        if(!root){
+            return false;
+        }
+        bool lSon = dfs(root->left, p, q);
+        bool rSon = dfs(root->right, p, q);
+        
+        // 如果左节点跟右节点都存在， 则当前父节点满足就是最近都祖先节点
+        // 如果当前节点的值跟目标节点一样，且lSon跟rSon 满足一个，则认为当前父节点满足就是最近都祖先节点
+        if((lSon && rSon) || ((root->val == p->val || root->val == q->val) && (lSon || rSon))){
+            ans = root;
+        }
+        return lSon || rSon || root->val == p->val || root->val == q->val;
+    }
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q){
+        dfs(root, p, q);
+        return ans;
     }
 };
