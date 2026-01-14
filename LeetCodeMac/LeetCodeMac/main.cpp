@@ -6087,37 +6087,212 @@ public:
 
 
 
+/*
+ struct TreeNode{
+ int val;
+ TreeNode* left;
+ TreeNode* right;
+ TreeNode():val(0),left(nullptr),right(nullptr){}
+ TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+ TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+ };
+ 
+ class Solution{
+ public:
+ TreeNode* ans;
+ 
+ // 深度优先搜索判断是否存在
+ bool dfs(TreeNode* root, TreeNode* p, TreeNode* q){
+ if(!root){
+ return false;
+ }
+ bool lSon = dfs(root->left, p, q);
+ bool rSon = dfs(root->right, p, q);
+ 
+ // 如果左节点跟右节点都存在， 则当前父节点满足就是最近都祖先节点
+ // 如果当前节点的值跟目标节点一样，且lSon跟rSon 满足一个，则认为当前父节点满足就是最近都祖先节点
+ if((lSon && rSon) || ((root->val == p->val || root->val == q->val) && (lSon || rSon))){
+ ans = root;
+ }
+ return lSon || rSon || root->val == p->val || root->val == q->val;
+ }
+ 
+ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q){
+ dfs(root, p, q);
+ return ans;
+ }
+ };
+ */
+
+
+
+
+
+
+/*
+ //Task 80 二叉树的右视图
+ 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
+ 示例 1：
+ 
+ 输入：root = [1,2,3,null,5,null,4]
+ 
+ 输出：[1,3,4]
+ 
+ 解释：
+ 
+ 
+ 
+ 示例 2：
+ 
+ 输入：root = [1,2,3,4,null,null,null,5]
+ 
+ 输出：[1,3,4,5]
+ 
+ 解释：
+ 
+ 
+ 
+ 示例 3：
+ 
+ 输入：root = [1,null,3]
+ 
+ 输出：[1,3]
+ 
+ 示例 4：
+ 
+ 输入：root = []
+ 
+ 输出：[]
+ 
+ 
+ 
+ 提示:
+ 
+ 二叉树的节点个数的范围是 [0,100]
+ -100 <= Node.val <= 100
+ */
+
+
+/*
+#include <vector>
+#include <unordered_map>
+#include <stack>
+using namespace std;
 struct TreeNode{
     int val;
     TreeNode* left;
     TreeNode* right;
-    TreeNode():val(0),left(nullptr),right(nullptr){}
-    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode():val(0),left(nullptr),right(nullptr){};
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){};
     TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
 };
 
 class Solution{
 public:
-    TreeNode* ans;
-    
-    // 深度优先搜索判断是否存在
-    bool dfs(TreeNode* root, TreeNode* p, TreeNode* q){
-        if(!root){
-            return false;
-        }
-        bool lSon = dfs(root->left, p, q);
-        bool rSon = dfs(root->right, p, q);
+
+    vector<int> rightSideView(TreeNode* root){
+        int maxDepth = -1;
+        //记录深度对应的节点
+        unordered_map<int, int> rightMostNodeAtDepth;
+        stack<TreeNode*> nodeStack;
+        stack<int> depthStack;
+        nodeStack.push(root);
+        depthStack.push(0);
         
-        // 如果左节点跟右节点都存在， 则当前父节点满足就是最近都祖先节点
-        // 如果当前节点的值跟目标节点一样，且lSon跟rSon 满足一个，则认为当前父节点满足就是最近都祖先节点
-        if((lSon && rSon) || ((root->val == p->val || root->val == q->val) && (lSon || rSon))){
-            ans = root;
+        //深度循环遍历节点
+        while (!nodeStack.empty()) {
+            TreeNode* node = nodeStack.top(); nodeStack.pop();
+            int depth =depthStack.top(); depthStack.pop();
+            
+            // 判断节点是否为空
+            if(node){
+                maxDepth = max(maxDepth, depth);
+                if(rightMostNodeAtDepth.find(depth) == rightMostNodeAtDepth.end()){
+                    rightMostNodeAtDepth[depth] = node->val;
+                }
+                
+                // 循环下面的节点，先左节点，再右节点
+                nodeStack.push(node->left);
+                nodeStack.push(node->right);
+                depthStack.push(depth+1);
+                depthStack.push(depth+1);
+            }
         }
-        return lSon || rSon || root->val == p->val || root->val == q->val;
+        vector<int> rightView;
+        for(int i = 0; i <= maxDepth; i++){
+            rightView.emplace_back(rightMostNodeAtDepth[i]);
+        }
+        return rightView;
     }
-    
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q){
-        dfs(root, p, q);
-        return ans;
+};
+*/
+
+
+
+
+/*
+ //Task 81 二叉树的层平均值
+ 
+ 给定一个非空二叉树的根节点 root , 以数组的形式返回每一层节点的平均值。与实际答案相差 10-5 以内的答案可以被接受。
+
+  
+
+ 示例 1：
+
+ 输入：root = [3,9,20,null,null,15,7]
+ 输出：[3.00000,14.50000,11.00000]
+ 解释：第 0 层的平均值为 3,第 1 层的平均值为 14.5,第 2 层的平均值为 11 。
+ 因此返回 [3, 14.5, 11] 。
+ 示例 2:
+
+
+
+ 输入：root = [3,9,20,15,7]
+ 输出：[3.00000,14.50000,11.00000]
+*/
+
+
+#include <vector>
+#include <queue>
+using namespace std;
+
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val): val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right): val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    vector<double> averageOfLevels(TreeNode* root){
+        vector<double> averageValue;
+        queue<TreeNode*> nodeQueue;
+        if(!root){
+            averageValue.emplace_back(0);
+        }
+        
+        // nodeQueue插入根节点
+        nodeQueue.push(root);
+        while(!nodeQueue.empty()){
+            int size = int(nodeQueue.size());
+            double sum = 0;
+            // 遍历同层次所有节点
+            for(int i = 0; i < size; i++){
+                auto node = nodeQueue.front();
+                nodeQueue.pop();
+                sum += node->val;
+                if(node->left){
+                    nodeQueue.push(node->left);
+                }
+                if(node->right){
+                    nodeQueue.push(node->right);
+                }
+            }
+            averageValue.emplace_back(sum/size);
+        }
+        return averageValue;
     }
 };
