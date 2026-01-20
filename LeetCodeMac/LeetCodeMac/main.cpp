@@ -6252,6 +6252,7 @@ public:
 */
 
 
+/*
 #include <vector>
 #include <queue>
 using namespace std;
@@ -6294,5 +6295,162 @@ public:
             averageValue.emplace_back(sum/size);
         }
         return averageValue;
+    }
+};
+*/
+
+
+
+
+
+/*
+ //Task 82 二叉树的层次遍历
+ 
+ 给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [3,9,20,null,null,15,7]
+ 输出：[[3],[9,20],[15,7]]
+ 示例 2：
+ 
+ 输入：root = [1]
+ 输出：[[1]]
+ 示例 3：
+ 
+ 输入：root = []
+ 输出：[]
+ */
+
+
+/*
+#include <vector>
+#include <queue>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){}
+    TreeNode(int _val):val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right): val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    vector<vector<int>> levelOrder(TreeNode* root){
+        vector<vector<int>> resVec;
+        
+        //当root 为空时，返回空结果
+        if(!root){
+            return resVec;
+        }
+        
+        //使用队列存储每一层节点,首先存入根节点
+        queue<TreeNode*> nodeQueue;
+        nodeQueue.push(root);
+        
+        while (!nodeQueue.empty()) {
+            int size = int(nodeQueue.size());
+            // 存储每一层的结果
+            vector<int> levelRes;
+            for(int i = 0; i < size; i++){
+                auto node = nodeQueue.front(); nodeQueue.pop();
+                levelRes.emplace_back(node->val);
+                if(node->left){
+                    nodeQueue.push(node->left);
+                }
+                if(node->right){
+                    nodeQueue.push(node->right);
+                }
+            }
+            resVec.emplace_back(levelRes);
+        }
+        return resVec;
+    }
+};
+*/
+
+
+
+
+/*
+ //Task 83 二叉树的锯齿形层序遍历
+ 
+ 给你二叉树的根节点 root ，返回其节点值的 锯齿形层序遍历 。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+ 
+ 
+ 
+ 示例 1：
+ 
+ 
+ 输入：root = [3,9,20,null,null,15,7]
+ 输出：[[3],[20,9],[15,7]]
+ 示例 2：
+ 
+ 输入：root = [1]
+ 输出：[[1]]
+ 示例 3：
+ 
+ 输入：root = []
+ 输出：[]
+ */
+
+#include <vector>
+#include <queue>
+#include <deque>
+using namespace std;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode():val(0),left(nullptr),right(nullptr){};
+    TreeNode(int _val): val(_val),left(nullptr),right(nullptr){}
+    TreeNode(int _val, TreeNode* _left, TreeNode* _right):val(_val),left(_left),right(_right){}
+};
+
+class Solution{
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root){
+        vector<vector<int>> res;
+        // 如果头节点为空，则返回空
+        if(!root){
+            return res;
+        }
+        
+        // 插入头节点
+        queue<TreeNode*> queueNode;
+        queueNode.push(root);
+        bool isOrderLeft = true;
+        
+        while(!queueNode.empty()){
+            int size = int(queueNode.size());
+            deque<int> levelRes;
+            
+            for(int i = 0; i<size; i++){
+                auto node = queueNode.front();
+                queueNode.pop();
+                
+                if(isOrderLeft){
+                    levelRes.push_back(node->val);
+                }else{
+                    levelRes.push_front(node->val);
+                }
+                
+                if(node->left){
+                    queueNode.push(node->left);
+                }
+                
+                if(node->right){
+                    queueNode.push(node->right);
+                }
+            }
+            res.emplace_back(vector<int>{levelRes.begin(),levelRes.end()});
+            isOrderLeft = !isOrderLeft;
+        }
+        return res;
     }
 };
